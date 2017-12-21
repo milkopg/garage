@@ -18,6 +18,7 @@ public class ParkingLevel implements Serializable{
 	private static final long serialVersionUID = -7239333350021551267L;
 	
 	@Id 
+	@Column(name= "ID")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	

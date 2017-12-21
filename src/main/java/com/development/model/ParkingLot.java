@@ -19,7 +19,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class ParkingLot implements Serializable{
 	private static final long serialVersionUID = -1753980509280051635L;
 	
-	@Id 
+	@Id
+	@Column(name= "ID")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
@@ -31,7 +32,7 @@ public class ParkingLot implements Serializable{
 	@JoinColumn(name="PARKING_LEVEL_ID")
 	private ParkingLevel parkingLevel;
 	
-	@Column(nullable = false, columnDefinition = "TINYINT(1)")
+	@Column(name = "IS_FREE", nullable = false, columnDefinition = "TINYINT(1)")
 	private Boolean isFree;
 
 	public Integer getId() {

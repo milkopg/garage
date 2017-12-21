@@ -21,6 +21,7 @@ public class Vehicle implements Serializable{
 	private static final long serialVersionUID = 6582342333876632327L;
 
 	@Id 
+	@Column(name= "ID")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	

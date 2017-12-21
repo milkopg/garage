@@ -21,14 +21,15 @@ public class Operation implements Serializable{
 	private static final long serialVersionUID = 4154778492372534803L;
 	
 	@Id 
+	@Column(name= "ID")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "startTime", columnDefinition="DATETIME")
+	@Column(name = "TIME_START", columnDefinition="DATETIME")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date timeEnter;
 	
-	@Column(name = "exitTime", columnDefinition="DATETIME")
+	@Column(name = "TIME_EXIT", columnDefinition="DATETIME")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date timeExit;
 	
