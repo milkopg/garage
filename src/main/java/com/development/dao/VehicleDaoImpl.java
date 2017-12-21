@@ -31,6 +31,10 @@ public class VehicleDaoImpl extends AbstractDao<Integer, Vehicle> implements Veh
 	public void save(Vehicle vehicle) {
 		persist(vehicle);
 	}
+	
+	public void update(Vehicle entity) {
+		update(entity);
+	}
 
 	public void deleteByPlateNumber(String plateNumber) {
 		Vehicle vehicle = null;
