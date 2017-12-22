@@ -11,12 +11,12 @@ import com.development.model.Vehicle;
 @Repository("vehicleDao")
 public class VehicleDaoImpl extends AbstractDao<Integer, Vehicle> implements VehicleDao {
 
-	public Vehicle findById(int id) {
+	public Vehicle getById(int id) {
 		Vehicle vehicle = getByKey(id);
 		return vehicle;
 	}
 
-	public Vehicle findByPlateNumber(String plateNumber) {
+	public Vehicle getByPlateNumber(String plateNumber) {
 		Vehicle vehicle = null;
 		try {
 			vehicle = (Vehicle) getEntityManager()
@@ -33,7 +33,7 @@ public class VehicleDaoImpl extends AbstractDao<Integer, Vehicle> implements Veh
 	}
 	
 	public void update(Vehicle entity) {
-		update(entity);
+		merge(entity);
 	}
 
 	public void deleteByPlateNumber(String plateNumber) {
@@ -49,7 +49,7 @@ public class VehicleDaoImpl extends AbstractDao<Integer, Vehicle> implements Veh
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Vehicle> findAllVeacles() {
+	public List<Vehicle> getAllVehicles() {
 		List<Vehicle> vehicles = getEntityManager()
 				.createQuery("SELECT o FROM Vehicle o order by plateNumber asc")
 				.getResultList();

@@ -39,7 +39,7 @@ public class Operation implements Serializable{
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="PARKING_LOT_ID")
-	private ParkingLot lot;
+	private ParkingLot parkingLot;
 
 	public Long getId() {
 		return id;
@@ -73,22 +73,26 @@ public class Operation implements Serializable{
 		this.vehicle = vehicle;
 	}
 
-	public ParkingLot getLot() {
-		return lot;
+	
+	
+	public ParkingLot getParkingLot() {
+		return parkingLot;
 	}
 
-	public void setLot(ParkingLot lot) {
-		this.lot = lot;
+	public void setParkingLot(ParkingLot parkingLot) {
+		this.parkingLot = parkingLot;
 	}
+	
+	
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((parkingLot == null) ? 0 : parkingLot.hashCode());
 		result = prime * result + ((timeEnter == null) ? 0 : timeEnter.hashCode());
 		result = prime * result + ((timeExit == null) ? 0 : timeExit.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((lot == null) ? 0 : lot.hashCode());
 		result = prime * result + ((vehicle == null) ? 0 : vehicle.hashCode());
 		return result;
 	}
@@ -102,6 +106,16 @@ public class Operation implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Operation other = (Operation) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (parkingLot == null) {
+			if (other.parkingLot != null)
+				return false;
+		} else if (!parkingLot.equals(other.parkingLot))
+			return false;
 		if (timeEnter == null) {
 			if (other.timeEnter != null)
 				return false;
@@ -112,16 +126,6 @@ public class Operation implements Serializable{
 				return false;
 		} else if (!timeExit.equals(other.timeExit))
 			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (lot == null) {
-			if (other.lot != null)
-				return false;
-		} else if (!lot.equals(other.lot))
-			return false;
 		if (vehicle == null) {
 			if (other.vehicle != null)
 				return false;
@@ -129,9 +133,9 @@ public class Operation implements Serializable{
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Operation id: " + getId() +  ", vehicleId: " + getVehicle().getId() + ", lotId: "  + getLot().getId() + ", timeEnter: " + getTimeEnter() + ", timeExit: " + getTimeExit();
+		return "Operation id: " + getId() +  ", vehicleId: " + getVehicle().getId() + ", lotId: "  + getParkingLot().getId() + ", timeEnter: " + getTimeEnter() + ", timeExit: " + getTimeExit();
 	}
 }
