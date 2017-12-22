@@ -101,4 +101,15 @@ public class OperationDaoImpl extends AbstractDao<Long, Operation> implements Op
 			delete(operation);
 		}
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Operation> getOperationsByPlateNumberForEnteredCars(String plateNumber) {
+		 List<Operation> operations = getEntityManager()
+				 .createQuery("SELECT o FROM Operation o where o.vehicle.plateNumber LIKE :plateNumber AND o.timeEnter IS NOT NULL AND o.timeEnter < :now AND o.timeExit IS NULL")
+				 .setParameter("plateNumber", plateNumber)
+				 .setParameter("now", new Date(), TemporalType.DATE)
+				 .getResultList();
+		return operations;
+	}
 }
