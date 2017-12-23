@@ -99,10 +99,36 @@ CREATE TABLE IF NOT EXISTS t_vehicle_type (
   PRIMARY KEY (ID),
   UNIQUE INDEX UK_8l18wy237yghuohoie2a765o (NAME)
 )
+
+--
+-- Definition for view v_garage_status
+--
+DROP VIEW IF EXISTS v_garage_status CASCADE;
+CREATE OR REPLACE 
+	DEFINER = 'root'@'localhost'
+VIEW v_garage_status
+AS
+SELECT
+  `level`.`LEVEL_NAME` AS `level_name`,
+  `level`.`CAPACITY` AS `capacity`,
+  SUM(`t_parking_lot`.`IS_FREE`) AS `free`,
+  (SELECT
+      COUNT(0)
+    FROM `t_parking_lot`
+    WHERE (`t_parking_lot`.`IS_FREE` = 0)) AS `used`
+FROM (`t_parking_lot`
+  LEFT JOIN `t_parking_level` `level`
+    ON ((`t_parking_lot`.`PARKING_LEVEL_ID` = `level`.`ID`)))
+WHERE (`t_parking_lot`.`IS_FREE` = 1)
+GROUP BY `t_parking_lot`.`PARKING_LEVEL_ID`,
+         `used`
+
 ENGINE = MYISAM
 AUTO_INCREMENT = 1
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
+
+
 
 -- 
 -- Dumping data for table t_parking_level
