@@ -125,7 +125,7 @@ public class OperationController {
 		parkingLevelService.save(parkingLevel);
 	}
 
-	@RequestMapping(value = "process", method = RequestMethod.POST)
+	@RequestMapping(value = "home", method = RequestMethod.POST)
 	public ModelAndView process(@Valid Operation operation, @Valid Vehicle vehicle, @Valid VehicleType vehicleType, 
 			@Valid ParkingLevel parkingLevel, BindingResult result, ModelMap modelMap) {
 		ModelAndView model =  new ModelAndView("home");
@@ -137,15 +137,19 @@ public class OperationController {
 		
 		validateEmptyVehicleNumber(model, vehicle);
 		validateCarAlreadyEntered(model, vehicle, operationType);
+		validateCarExitTwice(model, vehicle, operationType);
 		if (model.getModelMap().containsKey(Constants.ERROR_MESSAGE_OBJECT_NAME)) {
 			return model;
 		}
-		model = new ModelAndView("operation");
+		model = new ModelAndView("home");
 		processOperation(operationType, vehicle, vehicleType);
+		modelMap.addAttribute("garageStatus", getParkingLots());
 		return model;
 	}
 
 	
+	
+
 	private void processOperation(int operationType, Vehicle vehicle, VehicleType vehicleType) {
 		switch (OperationType.valueOf(operationType)) {
 		case ENTER:
@@ -175,6 +179,12 @@ public class OperationController {
 			model.addObject(Constants.ERROR_MESSAGE_OBJECT_NAME, messageSource.getMessage("vehicle.alreadyEntered", null, Locale.getDefault()));
 		}
 	}
-
+	
+	private void validateCarExitTwice(ModelAndView model, Vehicle vehicle, int operationType) {
+		if (OperationType.EXIT.getValue() == operationType 
+				&& operationService.isVehicleAlreadyExit(vehicle.getPlateNumber())) {
+			model.addObject(Constants.ERROR_MESSAGE_OBJECT_NAME, messageSource.getMessage("vehicle.exit.twice", null, Locale.getDefault()));
+		}
+	}
 }
 	

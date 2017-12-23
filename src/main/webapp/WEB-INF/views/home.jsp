@@ -16,7 +16,7 @@
 </head>
 <body>
 	<div>
-		<form method="POST" modelAttribute="operation" action="process"> 
+		<form method="POST" modelAttribute="operation" action="home"> 
 		<hr/>
 			<div class="form-group">
 			  <label for="vehicle">Plate number:</label>
