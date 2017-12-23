@@ -10,8 +10,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.Subselect;
 
-//@Immutable
 //@Subselect("SELECT PARKING_LEVEL_ID, Sum(IS_FREE) free, (SELECT COUNT(*)  FROM t_parking_lot WHERE IS_FREE = 0) used  FROM t_parking_lot  where is_free = 1  group by PARKING_LEVEL_ID, used;")
+@Immutable
 @Entity
 @Table(name="V_GARAGE_STATUS")
 public class ViewGarageStatus implements Serializable{
@@ -36,33 +36,22 @@ public class ViewGarageStatus implements Serializable{
 		return capacity;
 	}
 
-	public void setCapacity(Integer capacity) {
-		this.capacity = capacity;
-	}
-
 	public String getLevelName() {
 		return levelName;
-	}
-
-	public void setLevelName(String levelName) {
-		this.levelName = levelName;
 	}
 
 	public Integer getFree() {
 		return free;
 	}
 
-	public void setFree(Integer free) {
-		this.free = free;
-	}
-
+	
 	public Integer getUsed() {
 		return used;
 	}
 
-	public void setUsed(Integer used) {
-		this.used = used;
+	@Override
+	public String toString() {
+		return "ViewGarageStatus levelName: " + getLevelName() + ", capacity: " + getCapacity() + ", free: " + getFree() + ", used: " + getUsed();
 	}
-	
 	
 }

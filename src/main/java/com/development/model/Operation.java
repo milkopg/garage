@@ -26,11 +26,11 @@ public class Operation implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "TIME_START", columnDefinition="DATETIME")
+	@Column(name = "TIME_START")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date timeEnter;
 	
-	@Column(name = "TIME_EXIT", columnDefinition="DATETIME")
+	@Column(name = "TIME_EXIT")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date timeExit;
 	
