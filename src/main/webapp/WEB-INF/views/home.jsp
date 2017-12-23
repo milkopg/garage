@@ -48,8 +48,7 @@
 		    </div>
 				 <hr/>
 		     <div>
-		    	<form:form id="parkingInfo" method="GET" modelAttribute="parkingLots">
-				<table id="parkingLotTable" border="1" class="table table-striped" >
+		    	<table id="parkingLotTable" border="1" class="table table-striped" >
 				  <tr>
 				    <th> <spring:message code="parkingLevel.name"></spring:message></th>
 				    <th> <spring:message code="parkingLevel.capacity"></spring:message></th> 
@@ -67,7 +66,6 @@
 				</table>
 				
 				<br>
-		</form:form>
 		    </div>
 		    <hr/>
 			  <button type="submit" class="btn btn-default">Submit</button>

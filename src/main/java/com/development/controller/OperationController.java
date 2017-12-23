@@ -141,11 +141,12 @@ public class OperationController {
 			return model;
 		}
 		model = new ModelAndView("operation");
-		return processOperation(operationType, vehicle, vehicleType);
+		processOperation(operationType, vehicle, vehicleType);
+		return model;
 	}
 
 	
-	private ModelAndView processOperation(int operationType, Vehicle vehicle, VehicleType vehicleType) {
+	private void processOperation(int operationType, Vehicle vehicle, VehicleType vehicleType) {
 		switch (OperationType.valueOf(operationType)) {
 		case ENTER:
 			VehicleType vType = vehicleTypeService.getByName(vehicleType.getName());
@@ -160,7 +161,6 @@ public class OperationController {
 		default:
 			break;
 		}
-		return null;
 	}
 	
 	private void validateEmptyVehicleNumber(ModelAndView model, Vehicle vehicle) {
