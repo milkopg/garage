@@ -97,16 +97,29 @@ public class OperationDaoImpl extends AbstractDao<Long, Operation> implements Op
 	@SuppressWarnings("unchecked")
 	public List<Operation> getOperationsByPlateNumberForEnteredVehicles(String plateNumber) {
 		 List<Operation> operations = getEntityManager()
-				 .createQuery("SELECT o FROM Operation o where o.vehicle.plateNumber LIKE :plateNumber AND o.timeEnter IS NOT NULL AND o.timeEnter < :now AND o.timeExit IS NULL")
+				 .createQuery("SELECT o FROM Operation o where o.vehicle.plateNumber LIKE :plateNumber  AND o.timeExit is null")
 				 .setParameter("plateNumber", plateNumber)
-				 .setParameter("now", new Date(), TemporalType.DATE)
 				 .getResultList();
 		return operations;
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Operation> getOperationsByPlateNumberForExitedVehicles(String plateNumber) {
+		 List<Operation> operations = getEntityManager()
+				 .createQuery("SELECT o FROM Operation o where o.vehicle.plateNumber LIKE :plateNumber  AND o.timeEnter IS NOT NULL AND o.timeExit IS NOT NULL")
+				 .setParameter("plateNumber", plateNumber)
+				 .getResultList();
+		return operations;
+	}
+	
 	public boolean isVehicleInParking(String plateNumber) {
 		if (plateNumber == null) return false;
 		List<Operation> operations = getOperationsByPlateNumberForEnteredVehicles(plateNumber);
+		return operations != null && operations.size() > 0;
+	}
+
+	public boolean isVehicleAlreadyExit(String plateNumber) {
+		List<Operation> operations = getOperationsByPlateNumberForExitedVehicles(plateNumber);
 		return operations != null && operations.size() > 0;
 	}
 }

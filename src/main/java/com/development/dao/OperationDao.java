@@ -15,7 +15,9 @@ public interface OperationDao {
 	List<Operation> getOperationsByParkingLotName(String name);
 	List<Operation> getOperationsByParkingLevelName(String name);
 	List<Operation> getOperationsByPlateNumberForEnteredVehicles(String plateNumber);
+	List<Operation> getOperationsByPlateNumberForExitedVehicles(String plateNumber);
 	boolean isVehicleInParking(String plateNumber);
+	boolean isVehicleAlreadyExit(String plateNumber);
 	void save(Operation operation);
 	void update(Operation operation);
 	void deleteById(long operationId);

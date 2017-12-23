@@ -2,6 +2,8 @@ package com.development.dao;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import org.springframework.stereotype.Repository;
 
 import com.development.model.ViewGarageStatus;
@@ -11,7 +13,10 @@ public class ViewGarageStatusDaoImpl extends AbstractDao<Integer, ViewGarageStat
 
 	@SuppressWarnings("unchecked")
 	public List<ViewGarageStatus> getGarageStatuses() {
-		List<ViewGarageStatus> viewGarageStatuses = getEntityManager()
+		EntityManager entityManager  = getEntityManager();
+		//we need to clear entityManager, because data from view is not updated
+		entityManager.clear();
+		List<ViewGarageStatus> viewGarageStatuses = entityManager
 				.createQuery("SELECT o from ViewGarageStatus o ORDER BY o.levelName")
 				.getResultList();
 		return viewGarageStatuses;

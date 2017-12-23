@@ -139,4 +139,8 @@ public class OperationServiceImpl implements OperationService {
 	public boolean isVehicleInParking(String plateNumber) {
 		return dao.isVehicleInParking(plateNumber);
 	}
+
+	public boolean isVehicleAlreadyExit(String plateNumber) {
+		return dao.isVehicleAlreadyExit(plateNumber);
+	}
 }
