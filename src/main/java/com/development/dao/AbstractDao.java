@@ -5,6 +5,7 @@ import java.lang.reflect.ParameterizedType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 
 public abstract class AbstractDao <PK extends Serializable, T> {
 	private final Class<T> persistedClass;
@@ -13,8 +14,8 @@ public abstract class AbstractDao <PK extends Serializable, T> {
 	public AbstractDao() {
 		this.persistedClass =(Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1];
 	}
-	
-	@PersistenceContext
+	//to avoid lazy initialization exception
+	@PersistenceContext(type = PersistenceContextType.EXTENDED)
 	EntityManager entityManager;
 	
 	protected EntityManager getEntityManager() {
