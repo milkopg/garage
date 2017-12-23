@@ -2,6 +2,8 @@ package com.development.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,9 +18,12 @@ import org.springframework.web.servlet.ModelAndView;
 import com.development.model.Operation;
 import com.development.model.ParkingLevel;
 import com.development.model.ParkingLot;
+import com.development.model.Vehicle;
+import com.development.model.VehicleType;
 import com.development.service.OperationService;
 import com.development.service.ParkingLevelService;
 import com.development.service.ParkingLotService;
+import com.development.service.VehicleTypeService;
 
 @Controller
 @RequestMapping("/")
@@ -33,6 +38,9 @@ public class OperationController {
 	@Autowired
 	ParkingLotService parkingLotService;
 	
+	@Autowired
+	VehicleTypeService vehicleTypeService;
+	
 	@RequestMapping(value = { "/", "/home" }, method = RequestMethod.GET)
 	public ModelAndView home() {
 		initData();
@@ -40,14 +48,22 @@ public class OperationController {
 		ModelAndView mav = new ModelAndView("home");
 		mav.addObject("parkingLevel", parkingLevels.get(0));
 		mav.addObject("operation", new Operation());
+		mav.addObject("vehicle", new Vehicle());
+		mav.addObject("vehicleType", new VehicleType());
 		return mav;
 	}
 	
 	 @ModelAttribute("parkingLevels")
-	   public List<ParkingLevel> getParkingLevelList() {
-	     List<ParkingLevel> parkingLevelList = parkingLevelService.getAllParkingLevels();
-	      return parkingLevelList;
-	   }
+	 public List<ParkingLevel> getParkingLevelList() {
+	   List<ParkingLevel> parkingLevelList = parkingLevelService.getAllParkingLevels();
+	   return parkingLevelList;
+	 }
+	 
+	 @ModelAttribute("vehicleTypes")
+	 public List<VehicleType> getVehicleTypes() {
+	   List<VehicleType> vehicleTypeList = vehicleTypeService.getAllVehicleTypes();
+	   return vehicleTypeList;
+	 }
 
 	@Transactional
 	private void initData() {
@@ -77,9 +93,10 @@ public class OperationController {
 		parkingLevelService.save(parkingLevel);
 	}
 
-	@RequestMapping(value = "process")
-	public ModelAndView process() {
+	@RequestMapping(value = "process", method = RequestMethod.POST)
+	public ModelAndView process(@Valid Operation operation, @Valid Vehicle vehicle, BindingResult result, ModelMap modelMap) {
 		ModelAndView model = new ModelAndView("operation");
+		operation.getParkingLot();
 		return model;
 	}
 }
