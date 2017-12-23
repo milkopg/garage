@@ -40,7 +40,7 @@ public class VehicleTypeDaoImpl extends AbstractDao<Integer, VehicleType>impleme
 	@SuppressWarnings("unchecked")
 	public List<VehicleType> getAllVehicleTypes() {
 		List<VehicleType> vehicleTypes = getEntityManager()
-				.createQuery("SELECT o from VehicleType ORDER BY o.name")
+				.createQuery("SELECT o from VehicleType o ORDER BY o.name")
 				.getResultList();
 		return vehicleTypes;
 	}

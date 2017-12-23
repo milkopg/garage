@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="T_OPERATION")
@@ -40,6 +41,9 @@ public class Operation implements Serializable{
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="PARKING_LOT_ID")
 	private ParkingLot parkingLot;
+	
+	@Transient
+	private Integer type = OperationType.DEVICE_UNKNOWN.getId();
 
 	public Long getId() {
 		return id;
@@ -83,7 +87,13 @@ public class Operation implements Serializable{
 		this.parkingLot = parkingLot;
 	}
 	
-	
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
 
 	@Override
 	public int hashCode() {
@@ -93,6 +103,7 @@ public class Operation implements Serializable{
 		result = prime * result + ((parkingLot == null) ? 0 : parkingLot.hashCode());
 		result = prime * result + ((timeEnter == null) ? 0 : timeEnter.hashCode());
 		result = prime * result + ((timeExit == null) ? 0 : timeExit.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		result = prime * result + ((vehicle == null) ? 0 : vehicle.hashCode());
 		return result;
 	}
@@ -126,6 +137,11 @@ public class Operation implements Serializable{
 				return false;
 		} else if (!timeExit.equals(other.timeExit))
 			return false;
+		if (type == null) {
+			if (other.type != null)
+				return false;
+		} else if (!type.equals(other.type))
+			return false;
 		if (vehicle == null) {
 			if (other.vehicle != null)
 				return false;
@@ -136,6 +152,6 @@ public class Operation implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Operation id: " + getId() +  ", vehicleId: " + getVehicle().getId() + ", lotId: "  + getParkingLot().getId() + ", timeEnter: " + getTimeEnter() + ", timeExit: " + getTimeExit();
+		return "Operation id: " + getId() + ", type: "+ getType() + ", vehicleId: " + getVehicle().getId() + ", lotId: "  + getParkingLot().getId() + ", timeEnter: " + getTimeEnter() + ", timeExit: " + getTimeExit();
 	}
 }
