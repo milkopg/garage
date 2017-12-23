@@ -6,21 +6,25 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link href="<c:url value='/static/css/bootstrap.css' />" rel="stylesheet"></link>
+<link href="<c:url value='/static/css/styles.css' />" rel="stylesheet"></link>
 <title>Insert title here</title>
 </head>
 <body>
 	<div>
 		<form method="POST" modelAttribute="operation" action="process"> 
+		<hr/>
 			<div class="form-group">
 			  <label for="vehicle">Plate number:</label>
 			  <input type="text" class="form-control" name="operation.vehicle.name">
 			  <form:input path="vehicle.plateNumber" class="form-control"/>
 			</div>
+			<hr/>
 			  <div class="radio">
 		      <label><input type="radio" checked="checked" name="type" value="1">Enter</label>
 		       <div>
-		    	<form:select path="vehicleType.name">
-		    		<form:options items="${vehicleTypes}" itemValue="id" itemLabel="name"/>
+		    	<form:select path="vehicleType.name" id="vehicleType.name">
+		    		<form:options items="${vehicleTypes}" itemValue="name" itemLabel="name"/>
 		    	</form:select>
 		    	</div>
 		    </div>
@@ -30,12 +34,15 @@
 		    <div class="radio">
 		      <label><input type="radio" name="type" value="3">Status</label>
 		    </div>
+		    <hr/>
 		    <div>
-		    	<form:select path="parkingLevel.name">
-		    		<form:options items="${parkingLevels}" itemValue="id" itemLabel="name"/>
+		    	<form:select path="parkingLevel.levelName" id="parkingLevel.levelName">
+		    		<form:options items="${parkingLevels}" itemValue="levelName" itemLabel="levelName" />
 		    	</form:select>
 		    </div>
+		    <hr/>
 			  <button type="submit" class="btn btn-default">Submit</button>
+			  <hr/>
 		</form>
 	 </div>
 </body>
