@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.development.dao.VehicleDao;
 import com.development.model.Vehicle;
 
 @Service("vehicleService")
@@ -13,19 +14,16 @@ import com.development.model.Vehicle;
 public class VehicleServiceImpl implements VehicleService {
 
 	@Autowired
-	private VehicleService dao;
+	private VehicleDao dao;
 	
-	@Override
 	public Vehicle getById(int id) {
 		return dao.getById(id);
 	}
 
-	@Override
 	public Vehicle getByPlateNumber(String plateNumber) {
 		return dao.getByPlateNumber(plateNumber);
 	}
 
-	@Override
 	public void save(Vehicle vehicle) {
 		dao.save(vehicle);
 	}
@@ -35,7 +33,6 @@ public class VehicleServiceImpl implements VehicleService {
 	 * Just fetch the entity from db and update it with proper values within transaction.
 	 * It will be updated in db once transaction ends. 
 	 */
-	@Override
 	public void update(Vehicle vehicle) {
 		if (vehicle == null) return;
 		Vehicle dbVehicle = getById(vehicle.getId());
@@ -46,12 +43,10 @@ public class VehicleServiceImpl implements VehicleService {
 		dao.update(dbVehicle);
 	}
 
-	@Override
 	public void deleteByPlateNumber(String plateNumber) {
 		dao.deleteByPlateNumber(plateNumber);	
 	}
 
-	@Override
 	public List<Vehicle> getAllVehicles() {
 		return dao.getAllVehicles();
 	}
