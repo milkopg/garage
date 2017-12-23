@@ -9,12 +9,10 @@ import com.development.model.ParkingLot;
 @Repository("parkingLotDao")
 public class ParkingLotDaoImpl extends AbstractDao<Integer, ParkingLot> implements ParkingLotDao {
 
-	@Override
 	public ParkingLot getById(int id) {
 		return getByKey(id);
 	}
 
-	@Override
 	public ParkingLot getByName(String name) {
 		ParkingLot parkingLot = (ParkingLot) getEntityManager()
 				.createQuery("SELECT o FROM ParkingLot o where o.name = :name").setParameter("name", name)
@@ -23,7 +21,6 @@ public class ParkingLotDaoImpl extends AbstractDao<Integer, ParkingLot> implemen
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public List<ParkingLot> getLotsByParkingLevel(int parkingLevelId) {
 		List<ParkingLot> parkingLots = getEntityManager()
 				.createQuery("SELECT o from ParkingLot o where o.parkingLevel.id=:parkingLevelId")
@@ -33,7 +30,6 @@ public class ParkingLotDaoImpl extends AbstractDao<Integer, ParkingLot> implemen
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public List<ParkingLot> getFreeLotsByParkingLevel(int parkingLevelId) {
 		List<ParkingLot> parkingLots = getEntityManager()
 				.createQuery("SELECT o from ParkingLot o where o.parkingLevel.id=:parkingLevelId AND o.isFree = 1")
@@ -43,7 +39,6 @@ public class ParkingLotDaoImpl extends AbstractDao<Integer, ParkingLot> implemen
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public List<ParkingLot> getUsedLotsByParkingLevel(int parkingLevelId) {
 		List<ParkingLot> parkingLots = getEntityManager()
 				.createQuery("SELECT o from ParkingLot o where o.parkingLevel.id=:parkingLevelId AND o.isFree = 0")
@@ -53,25 +48,21 @@ public class ParkingLotDaoImpl extends AbstractDao<Integer, ParkingLot> implemen
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public List<ParkingLot> getAllLots() {
 		List<ParkingLot> parkingLots = getEntityManager()
-				.createQuery("SELECT o FROM ParkingLot order by o.name")
+				.createQuery("SELECT o FROM ParkingLot o order by o.name")
 				.getResultList();
 		return parkingLots;
 	}
 
-	@Override
 	public void save(ParkingLot parkingLot) {
 		persist(parkingLot);
 	}
 
-	@Override
 	public void update(ParkingLot parkingLot) {
 		merge(parkingLot);
 	}
 
-	@Override
 	public void deleteByName(String name) {
 		ParkingLot parkingLot = getByName(name);
 		if (parkingLot != null) {

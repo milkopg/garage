@@ -16,7 +16,7 @@ public class VehicleTypeServiceImpl implements VehicleTypeService {
 	private VehicleTypeService dao;
 	
 	public VehicleTypeServiceImpl() {
-		initData();
+		//initData();
 	}
 	
 	@Override

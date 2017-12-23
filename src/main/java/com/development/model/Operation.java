@@ -16,7 +16,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="T_PARKING_LEVEL")
+@Table(name="T_OPERATION")
 public class Operation implements Serializable{
 	private static final long serialVersionUID = 4154778492372534803L;
 	

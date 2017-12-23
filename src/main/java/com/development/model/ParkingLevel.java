@@ -26,8 +26,7 @@ public class ParkingLevel implements Serializable{
 	@Column(name="NAME", unique=true, nullable=false)
 	private String name;
 	
-	@NotEmpty
-	@Column(name="CAPACITY", unique=true, nullable=false)
+	@Column(name="CAPACITY", nullable=false)
 	private Integer capacity;
 
 	public Integer getId() {

@@ -16,37 +16,30 @@ public class ParkingLotServiceImpl implements ParkingLotService {
 	@Autowired
 	ParkingLotDao dao;
 	
-	@Override
 	public ParkingLot getById(int id) {
 		return dao.getById(id);
 	}
 
-	@Override
 	public ParkingLot getByName(String name) {
 		return dao.getByName(name);
 	}
 
-	@Override
 	public List<ParkingLot> getLotsByParkingLevel(int parkingLevelId) {
 		return dao.getLotsByParkingLevel(parkingLevelId);
 	}
 
-	@Override
 	public List<ParkingLot> getFreeLotsByParkingLevel(int parkingLevelId) {
 		return dao.getLotsByParkingLevel(parkingLevelId);
 	}
 
-	@Override
 	public List<ParkingLot> getUsedLotsByParkingLevel(int parkingLevelId) {
 		return dao.getUsedLotsByParkingLevel(parkingLevelId);
 	}
 
-	@Override
 	public List<ParkingLot> getAllLots() {
 		return dao.getAllLots();
 	}
 
-	@Override
 	public void save(ParkingLot parkingLot) {
 		if (parkingLot == null) return;
 		dao.save(parkingLot);
@@ -57,7 +50,6 @@ public class ParkingLotServiceImpl implements ParkingLotService {
 	 * Just fetch the entity from db and update it with proper values within transaction.
 	 * It will be updated in db once transaction ends. 
 	 */
-	@Override
 	public void update(ParkingLot parkingLot) {
 		if (parkingLot == null) return;
 		ParkingLot dbParkingLot = dao.getById(parkingLot.getId());
@@ -69,7 +61,6 @@ public class ParkingLotServiceImpl implements ParkingLotService {
 		}
 	}
 
-	@Override
 	public void deleteByName(String name) {
 		dao.deleteByName(name);
 	}

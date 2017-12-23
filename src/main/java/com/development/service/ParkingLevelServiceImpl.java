@@ -22,20 +22,17 @@ public class ParkingLevelServiceImpl implements ParkingLevelService {
 	ParkingLotDao daoLot;
 	
 	public ParkingLevelServiceImpl() {
-		initData();
+		//initData();
 	}
 	
-	@Override
 	public ParkingLevel getById(int id) {
 		return dao.getById(id);
 	}
 
-	@Override
 	public ParkingLevel getByName(String name) {
 		return dao.getByName(name);
 	}
 
-	@Override
 	public void save(ParkingLevel parkingLevel) {
 		if (parkingLevel == null) return;
 		dao.save(parkingLevel);
@@ -46,7 +43,6 @@ public class ParkingLevelServiceImpl implements ParkingLevelService {
 	 * Just fetch the entity from db and update it with proper values within transaction.
 	 * It will be updated in db once transaction ends. 
 	 */
-	@Override
 	public void update(ParkingLevel parkingLevel) {
 		if (parkingLevel == null) return;
 		ParkingLevel dbParkingLevel = dao.getById(parkingLevel.getId());
@@ -58,17 +54,14 @@ public class ParkingLevelServiceImpl implements ParkingLevelService {
 
 	}
 
-	@Override
 	public void deleteByName(String name) {
 		dao.deleteByName(name);
 	}
 
-	@Override
 	public List<ParkingLevel> getAllParkingLevels() {
 		return dao.getAllParkingLevels();
 	}
 
-	@Override
 	public void initData() {
 		List<ParkingLevel> parkingLevels = getAllParkingLevels();
 		if (parkingLevels == null || parkingLevels.isEmpty()) {

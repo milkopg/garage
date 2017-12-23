@@ -50,5 +50,5 @@ public class AppConfig extends WebMvcConfigurationSupport  {
 	/*@Override 
 	public void addViewControllers(ViewControllerRegistry registry) { 
 		registry.addViewController("/").setViewName("home"); 
-	} */
+	}*/
 }
