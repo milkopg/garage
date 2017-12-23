@@ -15,7 +15,7 @@ public class ParkingLevelDaoImpl extends AbstractDao<Integer, ParkingLevel> impl
 
 	public ParkingLevel getByName(String name) {
 		ParkingLevel parkingLevel = (ParkingLevel) getEntityManager()
-				.createQuery("SELECT o from ParkingLevel o where o.name = :name")
+				.createQuery("SELECT o from ParkingLevel o where o.levelName = :name")
 				.setParameter("name", name)
 				.getResultList();
 		return parkingLevel;
@@ -39,7 +39,7 @@ public class ParkingLevelDaoImpl extends AbstractDao<Integer, ParkingLevel> impl
 	@SuppressWarnings("unchecked")
 	public List<ParkingLevel> getAllParkingLevels() {
 		List<ParkingLevel> parkingLevels = getEntityManager()
-				.createQuery("SELECT o FROM ParkingLevel o ORDER BY o.name")
+				.createQuery("SELECT o FROM ParkingLevel o ORDER BY o.levelName")
 				.getResultList();
 		return parkingLevels;
 	}

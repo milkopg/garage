@@ -23,8 +23,8 @@ public class ParkingLevel implements Serializable{
 	private Integer id;
 	
 	@NotEmpty
-	@Column(name="NAME", unique=true, nullable=false)
-	private String name;
+	@Column(name="LEVEL_NAME", unique=true, nullable=false)
+	private String levelName;
 	
 	@Column(name="CAPACITY", nullable=false)
 	private Integer capacity;
@@ -37,12 +37,14 @@ public class ParkingLevel implements Serializable{
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	
+
+	public String getLevelName() {
+		return levelName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setLevelName(String levelName) {
+		this.levelName = levelName;
 	}
 
 	public Integer getCapacity() {
@@ -53,13 +55,14 @@ public class ParkingLevel implements Serializable{
 		this.capacity = capacity;
 	}
 
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((capacity == null) ? 0 : capacity.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((levelName == null) ? 0 : levelName.hashCode());
 		return result;
 	}
 
@@ -82,16 +85,16 @@ public class ParkingLevel implements Serializable{
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (name == null) {
-			if (other.name != null)
+		if (levelName == null) {
+			if (other.levelName != null)
 				return false;
-		} else if (!name.equals(other.name))
+		} else if (!levelName.equals(other.levelName))
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "ParkingLevel id: " + getId() + ", name: " + getName() + ", capacity" + getCapacity();
+		return "ParkingLevel id: " + getId() + ", name: " + getLevelName() + ", capacity" + getCapacity();
 	}
 }

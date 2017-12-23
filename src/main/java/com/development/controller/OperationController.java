@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.development.model.Operation;
+import com.development.model.OperationType;
 import com.development.model.ParkingLevel;
 import com.development.model.ParkingLot;
 import com.development.model.Vehicle;
@@ -69,6 +70,7 @@ public class OperationController {
 	private void initData() {
 		List<ParkingLot> parkingLots = parkingLotService.getAllLots();
 		List<ParkingLevel> parkingLevels = parkingLevelService.getAllParkingLevels();
+		List<VehicleType> vehicleTypes = vehicleTypeService.getAllVehicleTypes();
 		if (parkingLevels == null || parkingLevels.isEmpty())  {
 			initParkingLevel();
 			parkingLevels = parkingLevelService.getAllParkingLevels();
@@ -84,20 +86,56 @@ public class OperationController {
 				}
 			}
 		}
+		
+		if (vehicleTypes == null || vehicleTypes.isEmpty()) {
+			initVehicleTypes();
+		}
 	}
 	
+	private void initVehicleTypes() {
+		VehicleType vehicleType = new VehicleType();
+		vehicleType.setName("Car");
+		vehicleTypeService.save(vehicleType);
+		vehicleType = new VehicleType();
+		vehicleType.setName("MotorBike");
+		vehicleTypeService.save(vehicleType);
+
+	}
+
 	private void initParkingLevel() {
 		ParkingLevel parkingLevel = new ParkingLevel();
 		parkingLevel.setCapacity(100);
-		parkingLevel.setName("Level1");
+		parkingLevel.setLevelName("Level1");
 		parkingLevelService.save(parkingLevel);
 	}
 
 	@RequestMapping(value = "process", method = RequestMethod.POST)
-	public ModelAndView process(@Valid Operation operation, @Valid Vehicle vehicle, BindingResult result, ModelMap modelMap) {
+	public ModelAndView process(@Valid Operation operation, @Valid Vehicle vehicle, @Valid VehicleType vehicleType, @Valid ParkingLevel parkingLevel, BindingResult result, ModelMap modelMap) {
 		ModelAndView model = new ModelAndView("operation");
-		operation.getParkingLot();
+		int operationType = OperationType.valueOf(operation.getType()).getId();
+		if (operationType == -1) return null;
+		
+		switch (OperationType.valueOf(operationType)) {
+		case ENTER:
+			VehicleType vType = vehicleTypeService.getByName(vehicleType.getName());
+			operationService.enterCar(vehicle.getPlateNumber(), vType);
+			break;
+		case EXIT:
+			operationService.exitCar(vehicle.getPlateNumber());
+			break;
+		case STATUS:
+			List<Operation> operations = operationService.getOperationsByPlateNumber(vehicle.getPlateNumber());
+			break;
+		default:
+			break;
+		}
+		
 		return model;
+	}
+
+	private void processOperation(Integer operationType) {
+		
+		
 	}
 }
 	

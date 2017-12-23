@@ -33,53 +33,43 @@ public class OperationServiceImpl implements OperationService {
 	@Autowired
 	ParkingLotDao daoParkingLot;
 
-	@Override
 	public Operation getById(long id) {
 		return dao.getById(id);
 	}
 
-	@Override
 	public List<Operation> getOperationsAfterTimeEnter(Date date) {
 		return dao.getOperationsAfterTimeEnter(date);
 	}
 
-	@Override
 	public List<Operation> getOperationsBeforeTimeEnter(Date date) {
 		return dao.getOperationsBeforeTimeEnter(date);
 	}
 
-	@Override
 	public List<Operation> getOperationsAfterTimeExit(Date date) {
 		return dao.getOperationsAfterTimeExit(date);
 	}
 
-	@Override
 	public List<Operation> getOperationsBeforeTimeExit(Date date) {
 		return dao.getOperationsBeforeTimeExit(date);
 	}
 
-	@Override
 	public List<Operation> getOperationsByPlateNumber(String plateNumber) {
 		return dao.getOperationsByPlateNumber(plateNumber);
 	}
 
-	@Override
 	public List<Operation> getOperationsByParkingLotName(String name) {
 		return dao.getOperationsByParkingLotName(name);
 	}
 
-	@Override
 	public List<Operation> getOperationsByParkingLevelName(String name) {
 		return dao.getOperationsByParkingLevelName(name);
 	}
 
-	@Override
 	public void save(Operation operation) {
 		if (operation == null) return;
 		dao.save(operation);
 	}
 
-	@Override
 	public void update(Operation operation) {
 		if (operation == null) return;
 		Operation dbOperation = dao.getById(operation.getId());
@@ -93,12 +83,10 @@ public class OperationServiceImpl implements OperationService {
 
 	}
 
-	@Override
 	public void deleteById(long operationId) {
 		dao.deleteById(operationId);
 	}
 
-	@Override
 	public void enterCar(String plateNumber, VehicleType vehicleType) {
 		if (plateNumber == null || vehicleType == null) return;
 		Vehicle vehicle = daoVehicle.getByPlateNumber(plateNumber);
@@ -115,7 +103,6 @@ public class OperationServiceImpl implements OperationService {
 		dao.save(operation);
 	}
 
-	@Override
 	public int exitCar(String plateNumber) {
 		List<Operation> operations = dao.getOperationsByPlateNumberForEnteredCars(plateNumber);
 		if (operations == null || operations.isEmpty()) return -1;
@@ -134,7 +121,6 @@ public class OperationServiceImpl implements OperationService {
 		return (int) (operation.getTimeExit().getTime() - operation.getTimeEnter().getTime()) / MILLI_TO_HOUR;
 	}
 
-	@Override
 	public ParkingLot takeFirstAvailableParkingLot() {
 		List<ParkingLevel> parkingLevels = daoParkingLevel.getAllParkingLevels();
 		for (ParkingLevel parkingLevel : parkingLevels) {

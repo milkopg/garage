@@ -48,7 +48,7 @@ public class ParkingLevelServiceImpl implements ParkingLevelService {
 		ParkingLevel dbParkingLevel = dao.getById(parkingLevel.getId());
 		if (dbParkingLevel != null) {
 			dbParkingLevel.setCapacity(parkingLevel.getCapacity());
-			dbParkingLevel.setName(parkingLevel.getName());
+			dbParkingLevel.setLevelName(parkingLevel.getLevelName());
 		}
 		dao.update(dbParkingLevel);
 
@@ -67,7 +67,7 @@ public class ParkingLevelServiceImpl implements ParkingLevelService {
 		if (parkingLevels == null || parkingLevels.isEmpty()) {
 			ParkingLevel defaultLevel = new ParkingLevel();
 			defaultLevel.setCapacity(100);
-			defaultLevel.setName("Level1");
+			defaultLevel.setLevelName("Level1");
 			dao.save(defaultLevel);
 			
 			for (int i=0; i < 100; i ++) {
