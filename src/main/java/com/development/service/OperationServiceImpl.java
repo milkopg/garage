@@ -104,7 +104,7 @@ public class OperationServiceImpl implements OperationService {
 	}
 
 	public int exitCar(String plateNumber) {
-		List<Operation> operations = dao.getOperationsByPlateNumberForEnteredCars(plateNumber);
+		List<Operation> operations = dao.getOperationsByPlateNumberForEnteredVehicles(plateNumber);
 		if (operations == null || operations.isEmpty()) return -1;
 		Operation operation = operations.get(0);
 		operation.getParkingLot().setIsFree(true);
@@ -134,5 +134,9 @@ public class OperationServiceImpl implements OperationService {
 			}
 		}
 		return null; 
+	}
+
+	public boolean isVehicleInParking(String plateNumber) {
+		return dao.isVehicleInParking(plateNumber);
 	}
 }

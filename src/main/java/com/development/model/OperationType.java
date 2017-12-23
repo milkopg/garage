@@ -12,7 +12,7 @@ public enum OperationType {
 		id = value;
 	}
 	
-	public int getId() {
+	public int getValue() {
 		return id;
 	}
 	

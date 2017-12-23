@@ -1,13 +1,14 @@
 package com.development.controller;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,16 +16,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.development.general.Constants;
 import com.development.model.Operation;
 import com.development.model.OperationType;
 import com.development.model.ParkingLevel;
 import com.development.model.ParkingLot;
 import com.development.model.Vehicle;
 import com.development.model.VehicleType;
+import com.development.model.ViewGarageStatus;
 import com.development.service.OperationService;
 import com.development.service.ParkingLevelService;
 import com.development.service.ParkingLotService;
 import com.development.service.VehicleTypeService;
+import com.development.service.ViewGarageStatusService;
 
 @Controller
 @RequestMapping("/")
@@ -40,7 +44,13 @@ public class OperationController {
 	ParkingLotService parkingLotService;
 	
 	@Autowired
+	ViewGarageStatusService garageStatusService;
+	
+	@Autowired
 	VehicleTypeService vehicleTypeService;
+	
+	@Autowired
+	MessageSource messageSource;
 	
 	@RequestMapping(value = { "/", "/home" }, method = RequestMethod.GET)
 	public ModelAndView home() {
@@ -64,6 +74,12 @@ public class OperationController {
 	 public List<VehicleType> getVehicleTypes() {
 	   List<VehicleType> vehicleTypeList = vehicleTypeService.getAllVehicleTypes();
 	   return vehicleTypeList;
+	 }
+	 
+	 @ModelAttribute("garageStatus")
+	 public List<ViewGarageStatus> getParkingLots() {
+	   List<ViewGarageStatus> garageStatuses = garageStatusService.getGarageStatuses();
+	   return garageStatuses;
 	 }
 
 	@Transactional
@@ -110,11 +126,26 @@ public class OperationController {
 	}
 
 	@RequestMapping(value = "process", method = RequestMethod.POST)
-	public ModelAndView process(@Valid Operation operation, @Valid Vehicle vehicle, @Valid VehicleType vehicleType, @Valid ParkingLevel parkingLevel, BindingResult result, ModelMap modelMap) {
-		ModelAndView model = new ModelAndView("operation");
-		int operationType = OperationType.valueOf(operation.getType()).getId();
-		if (operationType == -1) return null;
+	public ModelAndView process(@Valid Operation operation, @Valid Vehicle vehicle, @Valid VehicleType vehicleType, 
+			@Valid ParkingLevel parkingLevel, BindingResult result, ModelMap modelMap) {
+		ModelAndView model =  new ModelAndView("home");
+		if (vehicle.getPlateNumber() == null) {
+			return model;
+		}
+		int operationType = OperationType.valueOf(operation.getType()).getValue();
+		if (operationType == -1) return model;
 		
+		validateEmptyVehicleNumber(model, vehicle);
+		validateCarAlreadyEntered(model, vehicle, operationType);
+		if (model.getModelMap().containsKey(Constants.ERROR_MESSAGE_OBJECT_NAME)) {
+			return model;
+		}
+		model = new ModelAndView("operation");
+		return processOperation(operationType, vehicle, vehicleType);
+	}
+
+	
+	private ModelAndView processOperation(int operationType, Vehicle vehicle, VehicleType vehicleType) {
 		switch (OperationType.valueOf(operationType)) {
 		case ENTER:
 			VehicleType vType = vehicleTypeService.getByName(vehicleType.getName());
@@ -129,13 +160,21 @@ public class OperationController {
 		default:
 			break;
 		}
-		
-		return model;
+		return null;
+	}
+	
+	private void validateEmptyVehicleNumber(ModelAndView model, Vehicle vehicle) {
+		if (vehicle == null || vehicle.getPlateNumber() == null || vehicle.getPlateNumber().length() < 2) {
+		    model.addObject(Constants.ERROR_MESSAGE_OBJECT_NAME, messageSource.getMessage("NotEmpty.vehicle.plateNumber", null, Locale.getDefault()));
+		}
+	}
+	
+	private void validateCarAlreadyEntered(ModelAndView model, Vehicle vehicle, int operationType) {
+		if (OperationType.ENTER.getValue() == operationType 
+				&& operationService.isVehicleInParking(vehicle.getPlateNumber())) {
+			model.addObject(Constants.ERROR_MESSAGE_OBJECT_NAME, messageSource.getMessage("vehicle.alreadyEntered", null, Locale.getDefault()));
+		}
 	}
 
-	private void processOperation(Integer operationType) {
-		
-		
-	}
 }
 	

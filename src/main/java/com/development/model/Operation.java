@@ -43,7 +43,7 @@ public class Operation implements Serializable{
 	private ParkingLot parkingLot;
 	
 	@Transient
-	private Integer type = OperationType.DEVICE_UNKNOWN.getId();
+	private Integer type = OperationType.DEVICE_UNKNOWN.getValue();
 
 	public Long getId() {
 		return id;
