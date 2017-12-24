@@ -53,7 +53,7 @@ public class OperationController {
 		
 		List<ParkingLevel> parkingLevels = parkingLevelService.getAllParkingLevels(); 
 		ModelAndView mav = new ModelAndView("home");
-		mav.addObject("parkingLevel", parkingLevels.get(0));
+		mav.addObject("parkingLevel", parkingLevels != null && !parkingLevels.isEmpty() ? parkingLevels.get(0) : new ParkingLevel());
 		mav.addObject("operation", new Operation());
 		mav.addObject("vehicle", new Vehicle());
 		mav.addObject("vehicleType", new VehicleType());
@@ -95,18 +95,19 @@ public class OperationController {
 			return model;
 		}
 		model = new ModelAndView("home");
-		processOperation(modelMap, operationType, vehicle, vehicleType);
+		ParkingLevel dbParkingLevel = parkingLevelService.getByName(parkingLevel.getLevelName());
+		processOperation(modelMap, operationType, vehicle, vehicleType, dbParkingLevel);
 		return model;
 	}
 
 	
 	
 
-	private void processOperation(ModelMap modelMap, int operationType, Vehicle vehicle, VehicleType vehicleType) {
+	private void processOperation(ModelMap modelMap, int operationType, Vehicle vehicle, VehicleType vehicleType, ParkingLevel parkingLevel) {
 		switch (OperationType.valueOf(operationType)) {
 		case ENTER:
 			VehicleType vType = vehicleTypeService.getByName(vehicleType.getName());
-			operationService.enterCar(vehicle.getPlateNumber(), vType);
+			operationService.enterCar(vehicle.getPlateNumber(), vType, parkingLevel);
 			modelMap.addAttribute("garageStatus", getParkingLots());
 			break;
 		case EXIT:

@@ -4,9 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 import com.development.model.Operation;
+import com.development.model.ParkingLevel;
 import com.development.model.ParkingLot;
 import com.development.model.VehicleType;
-import com.development.model.GarageStatus;
 
 public interface OperationService {
 	Operation getById(long id);
@@ -18,7 +18,7 @@ public interface OperationService {
 	List<Operation> getOperationsByParkingLotName(String name);
 	List<Operation> getOperationsByParkingLevelName(String name);
 	List<Operation> getOperationsByVehicleTypeName(String name);
-	void enterCar(String plateNumber, VehicleType vehicleType);
+	void enterCar(String plateNumber, VehicleType vehicleType, ParkingLevel parkingLevel);
 	int exitCar (String plateNumber);
 	boolean isVehicleInParking(String plateNumber);
 	boolean isVehicleAlreadyExit(String plateNumber);

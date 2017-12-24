@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.development.model.ParkingLot;
 import com.development.model.GarageStatus;
+import com.development.model.ParkingLevel;
 
 @Repository("parkingLotDao")
 public class ParkingLotDaoImpl extends AbstractDao<Integer, ParkingLot> implements ParkingLotDao {
@@ -82,5 +83,17 @@ public class ParkingLotDaoImpl extends AbstractDao<Integer, ParkingLot> implemen
 				.createNativeQuery(NATIVE_SQL, GarageStatus.class)
 				.getResultList();
 		return garageStatus;
+	}
+
+	@SuppressWarnings("unchecked")
+	public void deleteByParkingLevel(ParkingLevel parkingLevel) {
+		Integer id = parkingLevel.getId();
+		List<ParkingLot> parkingLots = getEntityManager()
+				.createQuery("SELECT o FROM ParkingLot o where o.ParkingLevel.id =:id ")
+				.setParameter("id", id)
+				.getResultList();
+		for (ParkingLot lot : parkingLots) {
+			delete(lot);
+		}
 	}
 }

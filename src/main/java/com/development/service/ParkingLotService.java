@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.development.model.ParkingLot;
 import com.development.model.GarageStatus;
+import com.development.model.ParkingLevel;
 
 public interface ParkingLotService {
 	ParkingLot getById(int id);
@@ -16,4 +17,5 @@ public interface ParkingLotService {
 	void save (ParkingLot parkingLot);
 	void update (ParkingLot parkingLot);
 	void deleteByName(String name);
+	void deleteByParkingLevel(ParkingLevel parkingLevel);
 }

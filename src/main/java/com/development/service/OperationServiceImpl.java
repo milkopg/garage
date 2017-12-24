@@ -88,7 +88,7 @@ public class OperationServiceImpl implements OperationService {
 		dao.deleteById(operationId);
 	}
 
-	public void enterCar(String plateNumber, VehicleType vehicleType) {
+	public void enterCar(String plateNumber, VehicleType vehicleType, ParkingLevel parkingLevel) {
 		if (plateNumber == null || vehicleType == null) return;
 		Vehicle vehicle = daoVehicle.getByPlateNumber(plateNumber);
 		if (vehicle == null) {
@@ -98,7 +98,7 @@ public class OperationServiceImpl implements OperationService {
 			daoVehicle.save(vehicle);
 		}
 		Operation operation = new Operation();
-		operation.setParkingLot(takeFirstAvailableParkingLot());
+		operation.setParkingLot(takeFirstAvailableParkingLot(parkingLevel));
 		operation.setTimeEnter(new Date());
 		operation.setVehicle(vehicle);
 		dao.save(operation);
@@ -122,16 +122,13 @@ public class OperationServiceImpl implements OperationService {
 		return (int) (operation.getTimeExit().getTime() - operation.getTimeEnter().getTime()) / MILLI_TO_HOUR;
 	}
 
-	public ParkingLot takeFirstAvailableParkingLot() {
-		List<ParkingLevel> parkingLevels = daoParkingLevel.getAllParkingLevels();
-		for (ParkingLevel parkingLevel : parkingLevels) {
-			List<ParkingLot> parkingLots = daoParkingLot.getFreeLotsByParkingLevel(parkingLevel.getId());
-			for (ParkingLot freeParkingLot : parkingLots) {
-				if (freeParkingLot.getIsFree()) {
-					freeParkingLot.setIsFree(false);
-					daoParkingLot.update(freeParkingLot);
-					return freeParkingLot;
-				}
+	public ParkingLot takeFirstAvailableParkingLot(ParkingLevel parkingLevel) {
+		List<ParkingLot> parkingLots = daoParkingLot.getFreeLotsByParkingLevel(parkingLevel.getId());
+		for (ParkingLot freeParkingLot : parkingLots) {
+			if (freeParkingLot.getIsFree()) {
+				freeParkingLot.setIsFree(false);
+				daoParkingLot.update(freeParkingLot);
+				return freeParkingLot;
 			}
 		}
 		return null; 

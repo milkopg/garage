@@ -63,6 +63,7 @@ public class SetupController {
 	@RequestMapping(value = "addVehicleType", method = RequestMethod.POST)
 	public ModelAndView addVehicleType(@Valid VehicleType vehicleType, BindingResult result, ModelMap modelMap) {
 		 ModelAndView model =  new ModelAndView("setup");
+		 model.addObject("parkingLevel", new VehicleType());
 		 String name = vehicleType.getName();
 		 if (name == null) {
 			 model.addObject(Constants.ERROR_MESSAGE, messageSource.getMessage("NotEmpty.vehicleType.name", null, Locale.getDefault()));
@@ -70,12 +71,13 @@ public class SetupController {
 		 }
 		 vehicleTypeService.save(vehicleType);
 		 modelMap.addAttribute("vehicleTypes", getVehicleTypes());
-		 return model;
+		 return setup();
 	}
 
 	@RequestMapping(value = "removeVehicleType", method = RequestMethod.POST)
 	public ModelAndView removeVehicleType(@Valid VehicleType vehicleType, BindingResult result, ModelMap modelMap) {
 		 ModelAndView model =  new ModelAndView("setup");
+		 model.addObject("parkingLevel", new VehicleType());
 		 String name = vehicleType.getName();
 		 if (name == null) {
 			 model.addObject(Constants.ERROR_MESSAGE, messageSource.getMessage("NotEmpty.vehicleType.name", null, Locale.getDefault()));
@@ -89,29 +91,27 @@ public class SetupController {
 		 VehicleType vehicleTypeForDelete = vehicleTypeService.getByName(name);
 		 vehicleTypeService.deleteByVehicleTypeName(vehicleTypeForDelete.getName());
 		 modelMap.addAttribute("vehicleTypes", getVehicleTypes());
-		 return model;
+		 return setup();
 	}
 	
 	@RequestMapping(value = "addParkingLevel", method = RequestMethod.POST)
 	public ModelAndView addParkingLevel(@Valid ParkingLevel parkingLevel, BindingResult result, ModelMap modelMap) {
 		 ModelAndView model =  new ModelAndView("setup");
+		 model.addObject("vehicleType", new VehicleType());
 		 String name = parkingLevel.getLevelName();
 		 if (name == null) {
 			 model.addObject(Constants.ERROR_MESSAGE_PARKING_LEVEL_ADD, messageSource.getMessage("NotEmpty.parkingLevel.name", null, Locale.getDefault()));
-			 model.addObject("vehicleType", new VehicleType());
 			 return model;
 		 }
 		 
 		 if (parkingLevel.getCapacity() == null) {
 			 model.addObject(Constants.ERROR_MESSAGE_PARKING_LEVEL_ADD, messageSource.getMessage("NotEmpty.parkingLevel.capacity", null, Locale.getDefault()));
-			 model.addObject("vehicleType", new VehicleType());
 			 return model;
 		 }
 		 
 		 Integer startNumber = parkingLevel.getStartNumber();
 		 if (startNumber == null) {
 			 model.addObject(Constants.ERROR_MESSAGE_PARKING_LEVEL_ADD, messageSource.getMessage("NotEmpty.parkingLevel.startNumber", null, Locale.getDefault()));
-			 model.addObject("vehicleType", new VehicleType());
 			 return model;
 		 }
 		
@@ -125,20 +125,23 @@ public class SetupController {
 	@RequestMapping(value = "removeParkingLevel", method = RequestMethod.POST)
 	public ModelAndView removeParkingLevel(@Valid ParkingLevel parkingLevel, BindingResult result, ModelMap modelMap) {
 		 ModelAndView model =  new ModelAndView("setup");
+		 model.addObject("vehicleType", new VehicleType());
 		 String name = parkingLevel.getLevelName();
 		 if (name == null) {
 			 model.addObject(Constants.ERROR_MESSAGE_PARKING_LEVEL_REMOVE, messageSource.getMessage("NotEmpty.vehicleType.name", null, Locale.getDefault()));
-			 model.addObject("vehicleType", new VehicleType());
 			 return model;
 		 }
 		 List<Operation> operations = operationService.getOperationsByVehicleTypeName(name);
 		 if (operations != null && !operations.isEmpty()) {
 			 model.addObject(Constants.ERROR_MESSAGE_PARKING_LEVEL_REMOVE, messageSource.getMessage("error.parkingLevel.delete.haverecords", null, Locale.getDefault()));
-			 model.addObject("vehicleType", new VehicleType());
 			 return model;
 		 }
 		 ParkingLevel parkingLevelForDelete = parkingLevelService.getByName(name);
+		 
+		 parkingLotService.deleteByParkingLevel(parkingLevelForDelete);
 		 parkingLevelService.deleteByName(parkingLevelForDelete.getLevelName());
+		 parkingLotService.deleteByName(name);
+		 
 		 modelMap.addAttribute("parkingLevels", getParkingLevels());
 		 return setup();
 	}
