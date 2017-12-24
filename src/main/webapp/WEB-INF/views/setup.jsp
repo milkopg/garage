@@ -41,7 +41,66 @@
 					</c:if>
 				</div>
 		</form>
-				<hr/>
+	<hr/>
 		    
+		 <form method="POST" action="addParkingLevel"> 
+			<hr/>
+			<div>
+		    	<table id="viewParkingLevelTable" border="1" class="table table-striped" >
+				  <tr>
+				    <th> <spring:message code="parkingLevel.id"></spring:message></th>
+				    <th> <spring:message code="parkingLevel.name"></spring:message></th> 
+				     <th> <spring:message code="parkingLevel.capacity"></spring:message></th> 
+				 </tr>
+				 <c:forEach var="parkingLevel" varStatus="status" items="${parkingLevels}">
+				  <tr>
+				    <td>${parkingLevel.id}</td>
+				    <td>${parkingLevel.levelName}</td> 
+				     <td>${parkingLevel.capacity}</td> 
+				  </tr>
+				  </c:forEach>
+				</table>
+				<div class="divider"></div>
+				<br>
+				<div>
+				<table id="addParkingLevelTable" class="table table-striped">
+					<tr>
+						<th><label><spring:message code="parkingLevel.add"></spring:message></label></th>
+						<th><form:input path="parkingLevel.levelName" class="form-control"/></th>
+					</tr>
+					<tr>
+						<th><label><spring:message code="parkingLevel.capacity"></spring:message></label></th>
+						<th><form:input path="parkingLevel.capacity" class="form-control" /></th>
+					</tr>
+					<tr>
+						<th><label><spring:message code="parkingLevel.startNumber"></spring:message></label></th>
+						<th><form:input path="parkingLevel.startNumber" class="form-control"/></th>
+					</tr>
+					<tr>
+						<th></th>
+						<th><button type="submit" class="btn btn-default"><spring:message code="parkingLevel.button.add"></spring:message></button></th>
+						<c:if test="${not empty msgParkingLevelAdd}">
+						<strong style="color: red; font-size: 16px">${msgParkingLevelAdd}</strong>
+					</c:if>
+					</tr>
+				</table>
+				</div>
+				<br>
+		    </div>
+		</form>
+		<form method="POST" action="removeParkingLevel">
+			<br>
+				<div>
+					<label><spring:message code="parkingLevel.remove"></spring:message></label>
+					<form:select path="parkingLevel.levelName" id="parkingLevel.levelName">
+		    			<form:options items="${parkingLevels}" itemValue="levelName" itemLabel="levelName"/>
+		    		</form:select>
+		    		<button type="submit" class="btn btn-default"><spring:message code="parkingLevel.button.remove"></spring:message></button>
+		    		<c:if test="${not empty msgParkingLevelRemove}">
+						<strong style="color: red; font-size: 16px">${msgParkingLevelRemove}</strong>
+					</c:if>
+				</div>
+		</form>
+	<hr/>
 </body>
 </html>

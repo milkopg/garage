@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -29,6 +30,9 @@ public class ParkingLevel implements Serializable{
 	@Column(name="CAPACITY", nullable=false)
 	private Integer capacity;
 
+	@Transient
+	private Integer startNumber;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -55,7 +59,14 @@ public class ParkingLevel implements Serializable{
 		this.capacity = capacity;
 	}
 
-	
+	public Integer getStartNumber() {
+		return startNumber;
+	}
+
+	public void setStartNumber(Integer startNumber) {
+		this.startNumber = startNumber;
+	}
+
 	
 
 	@Override
@@ -65,6 +76,7 @@ public class ParkingLevel implements Serializable{
 		result = prime * result + ((capacity == null) ? 0 : capacity.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((levelName == null) ? 0 : levelName.hashCode());
+		result = prime * result + ((startNumber == null) ? 0 : startNumber.hashCode());
 		return result;
 	}
 
@@ -91,6 +103,11 @@ public class ParkingLevel implements Serializable{
 			if (other.levelName != null)
 				return false;
 		} else if (!levelName.equals(other.levelName))
+			return false;
+		if (startNumber == null) {
+			if (other.startNumber != null)
+				return false;
+		} else if (!startNumber.equals(other.startNumber))
 			return false;
 		return true;
 	}
