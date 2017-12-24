@@ -9,8 +9,9 @@
 <title><spring:message code="garage.setup.title"></spring:message></title>
 </head>
 <body>
-		
-		<div>
+		<form method="POST" action="addVehicleType"> 
+			<hr/>
+			<div>
 		    	<table id="vehicleTypeTable" border="1" class="table table-striped" >
 				  <tr>
 				    <th> <spring:message code="vehicleType.id"></spring:message></th>
@@ -23,8 +24,17 @@
 				  </tr>
 				  </c:forEach>
 				</table>
+				<hr/>
+				<div>
+					<label><spring:message code="vehicleType.add"></spring:message></label>
+					<form:input path="vehicleType.name" class="form-control"/>
+						<%-- <form:button></form:button> --%>
+				 	<button type="submit" class="btn btn-default">Submit</button>
+				</div>
+			
 				<br>
 		    </div>
+		</form>
 		    
 </body>
 </html>

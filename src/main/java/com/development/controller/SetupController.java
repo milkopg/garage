@@ -2,9 +2,13 @@ package com.development.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,8 +38,16 @@ public class SetupController {
 //		mav.addObject("parkingLevel", parkingLevels.get(0));
 //		mav.addObject("operation", new Operation());
 //		mav.addObject("vehicle", new Vehicle());
-//		mav.addObject("vehicleType", new VehicleType());
+		mav.addObject("vehicleType", new VehicleType());
 		return mav;
+	}
+	
+	
+	@RequestMapping(value = "addVehicleType", method = RequestMethod.POST)
+	public ModelAndView addVehicleType(@Valid VehicleType vehicleType, BindingResult result, ModelMap modelMap) {
+		 ModelAndView model =  new ModelAndView("setup");;
+		 return model;
+		
 	}
 	
 	 @ModelAttribute("vehicleTypes")
