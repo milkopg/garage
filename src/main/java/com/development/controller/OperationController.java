@@ -47,12 +47,6 @@ public class OperationController {
 	@Autowired
 	MessageSource messageSource;
 	
-	@PostConstruct
-	public void initIt() throws Exception {
-		DataInitManager dataManager = new DataInitManager(parkingLevelService, parkingLotService, vehicleTypeService);
-		dataManager.initData();
-	}
-	
 	@RequestMapping(value = { "/", "home" }, method = RequestMethod.GET)
 	public ModelAndView home() {
 	
@@ -97,7 +91,7 @@ public class OperationController {
 		validateEmptyVehicleNumber(model, vehicle);
 		validateCarAlreadyEntered(model, vehicle, operationType);
 		//validateCarExitTwice(model, vehicle, operationType);
-		if (model.getModelMap().containsKey(Constants.ERROR_MESSAGE_OBJECT_NAME)) {
+		if (model.getModelMap().containsKey(Constants.ERROR_MESSAGE)) {
 			return model;
 		}
 		model = new ModelAndView("home");
@@ -130,21 +124,21 @@ public class OperationController {
 	
 	private void validateEmptyVehicleNumber(ModelAndView model, Vehicle vehicle) {
 		if (vehicle == null || vehicle.getPlateNumber() == null || vehicle.getPlateNumber().length() < 2) {
-		    model.addObject(Constants.ERROR_MESSAGE_OBJECT_NAME, messageSource.getMessage("NotEmpty.vehicle.plateNumber", null, Locale.getDefault()));
+		    model.addObject(Constants.ERROR_MESSAGE, messageSource.getMessage("NotEmpty.vehicle.plateNumber", null, Locale.getDefault()));
 		}
 	}
 	
 	private void validateCarAlreadyEntered(ModelAndView model, Vehicle vehicle, int operationType) {
 		if (OperationType.ENTER.getValue() == operationType 
 				&& operationService.isVehicleInParking(vehicle.getPlateNumber())) {
-			model.addObject(Constants.ERROR_MESSAGE_OBJECT_NAME, messageSource.getMessage("vehicle.alreadyEntered", null, Locale.getDefault()));
+			model.addObject(Constants.ERROR_MESSAGE, messageSource.getMessage("vehicle.alreadyEntered", null, Locale.getDefault()));
 		}
 	}
 	
 	private void validateCarExitTwice(ModelAndView model, Vehicle vehicle, int operationType) {
 		if (OperationType.EXIT.getValue() == operationType 
 				&& operationService.isVehicleAlreadyExit(vehicle.getPlateNumber())) {
-			model.addObject(Constants.ERROR_MESSAGE_OBJECT_NAME, messageSource.getMessage("vehicle.exit.twice", null, Locale.getDefault()));
+			model.addObject(Constants.ERROR_MESSAGE, messageSource.getMessage("vehicle.exit.twice", null, Locale.getDefault()));
 		}
 	}
 }

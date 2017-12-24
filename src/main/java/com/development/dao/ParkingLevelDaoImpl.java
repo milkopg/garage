@@ -17,7 +17,7 @@ public class ParkingLevelDaoImpl extends AbstractDao<Integer, ParkingLevel> impl
 		ParkingLevel parkingLevel = (ParkingLevel) getEntityManager()
 				.createQuery("SELECT o from ParkingLevel o where o.levelName = :name")
 				.setParameter("name", name)
-				.getResultList();
+				.getSingleResult();
 		return parkingLevel;
 	}
 
