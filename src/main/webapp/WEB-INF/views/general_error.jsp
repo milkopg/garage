@@ -1,4 +1,4 @@
-<%@include file="master.jsp"%>
+<%@include file="taglibs.jsp"%>
 <ct:header></ct:header>
 <ct:body>
 		<div id="center" class="column">

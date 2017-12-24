@@ -30,7 +30,6 @@ import com.development.service.ParkingLotService;
 import com.development.service.VehicleTypeService;
 
 @Controller
-@RequestMapping("/")
 public class OperationController {
 
 	@Autowired
@@ -54,7 +53,7 @@ public class OperationController {
 		dataManager.initData();
 	}
 	
-	@RequestMapping(value = { "/", "/home" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/", "home" }, method = RequestMethod.GET)
 	public ModelAndView home() {
 	
 		

@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
-<title><spring:message code="garage.title"></spring:message></title>
+<title><spring:message code="garage.home.title"></spring:message></title>
 </head>
 <body>
 	<div>
