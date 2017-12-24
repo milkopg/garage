@@ -3,12 +3,12 @@ package com.development.controller;
 import java.util.List;
 import java.util.Locale;
 
+import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.development.data.DataInitManager;
 import com.development.general.Constants;
+import com.development.model.GarageStatus;
 import com.development.model.Operation;
 import com.development.model.OperationType;
 import com.development.model.ParkingLevel;
-import com.development.model.ParkingLot;
 import com.development.model.Vehicle;
 import com.development.model.VehicleType;
-import com.development.model.GarageStatus;
 import com.development.service.OperationService;
 import com.development.service.ParkingLevelService;
 import com.development.service.ParkingLotService;
@@ -48,9 +48,16 @@ public class OperationController {
 	@Autowired
 	MessageSource messageSource;
 	
+	@PostConstruct
+	public void initIt() throws Exception {
+		DataInitManager dataManager = new DataInitManager(parkingLevelService, parkingLotService, vehicleTypeService);
+		dataManager.initData();
+	}
+	
 	@RequestMapping(value = { "/", "/home" }, method = RequestMethod.GET)
 	public ModelAndView home() {
-		initData();
+	
+		
 		List<ParkingLevel> parkingLevels = parkingLevelService.getAllParkingLevels(); 
 		ModelAndView mav = new ModelAndView("home");
 		mav.addObject("parkingLevel", parkingLevels.get(0));
@@ -78,49 +85,6 @@ public class OperationController {
 	   return garageStatuses;
 	 }
 	 
-	@Transactional
-	private void initData() {
-		List<ParkingLot> parkingLots = parkingLotService.getAllLots();
-		List<ParkingLevel> parkingLevels = parkingLevelService.getAllParkingLevels();
-		List<VehicleType> vehicleTypes = vehicleTypeService.getAllVehicleTypes();
-		if (parkingLevels == null || parkingLevels.isEmpty())  {
-			initParkingLevel();
-			parkingLevels = parkingLevelService.getAllParkingLevels();
-		}
-		if (parkingLots == null || parkingLots.isEmpty()) {
-			for (ParkingLevel parkingLevel : parkingLevels) {
-				for (int i=1; i <= parkingLevel.getCapacity() ; i++) {
-					ParkingLot parkingLot = new ParkingLot();
-					parkingLot.setIsFree(true);
-					parkingLot.setName(parkingLevel.getId() * 1000 + i + "");
-					parkingLot.setParkingLevel(parkingLevel);
-					parkingLotService.save(parkingLot);
-				}
-			}
-		}
-		
-		if (vehicleTypes == null || vehicleTypes.isEmpty()) {
-			initVehicleTypes();
-		}
-	}
-	
-	private void initVehicleTypes() {
-		VehicleType vehicleType = new VehicleType();
-		vehicleType.setName("Car");
-		vehicleTypeService.save(vehicleType);
-		vehicleType = new VehicleType();
-		vehicleType.setName("MotorBike");
-		vehicleTypeService.save(vehicleType);
-
-	}
-
-	private void initParkingLevel() {
-		ParkingLevel parkingLevel = new ParkingLevel();
-		parkingLevel.setCapacity(100);
-		parkingLevel.setLevelName("Level1");
-		parkingLevelService.save(parkingLevel);
-	}
-
 	@RequestMapping(value = "home", method = RequestMethod.POST)
 	public ModelAndView process(@Valid Operation operation, @Valid Vehicle vehicle, @Valid VehicleType vehicleType, 
 			@Valid ParkingLevel parkingLevel, BindingResult result, ModelMap modelMap) {
