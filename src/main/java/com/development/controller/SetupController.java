@@ -1,6 +1,7 @@
 package com.development.controller;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.validation.Valid;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.development.general.Constants;
 import com.development.model.Operation;
 import com.development.model.ParkingLevel;
 import com.development.model.Vehicle;
@@ -45,7 +47,14 @@ public class SetupController {
 	
 	@RequestMapping(value = "addVehicleType", method = RequestMethod.POST)
 	public ModelAndView addVehicleType(@Valid VehicleType vehicleType, BindingResult result, ModelMap modelMap) {
-		 ModelAndView model =  new ModelAndView("setup");;
+		 ModelAndView model =  new ModelAndView("setup");
+		 String name = vehicleType.getName();
+		 if (name == null) {
+			 model.addObject(Constants.ERROR_MESSAGE_OBJECT_NAME, messageSource.getMessage("NotEmpty.vehicleType.name", null, Locale.getDefault()));
+			 return model;
+		 }
+		 vehicleTypeService.save(vehicleType);
+		 modelMap.addAttribute("vehicleTypes", getVehicleTypes());
 		 return model;
 		
 	}
