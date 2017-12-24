@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.development.dao.ParkingLotDao;
 import com.development.model.ParkingLot;
-import com.development.model.ViewGarageStatus;
+import com.development.model.GarageStatus;
 
 @Service("parkingLotService")
 @Transactional
@@ -66,7 +66,7 @@ public class ParkingLotServiceImpl implements ParkingLotService {
 		dao.deleteByName(name);
 	}
 
-	public List<ViewGarageStatus> getGerageStatus() {
+	public List<GarageStatus> getGerageStatus() {
 		return dao.getGerageStatus();
 	}
 

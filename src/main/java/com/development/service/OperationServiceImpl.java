@@ -16,7 +16,7 @@ import com.development.model.ParkingLevel;
 import com.development.model.ParkingLot;
 import com.development.model.Vehicle;
 import com.development.model.VehicleType;
-import com.development.model.ViewGarageStatus;
+import com.development.model.GarageStatus;
 
 @Service("operationService")
 @Transactional

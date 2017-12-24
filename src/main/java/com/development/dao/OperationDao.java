@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.development.model.Operation;
-import com.development.model.ViewGarageStatus;
+import com.development.model.GarageStatus;
 
 public interface OperationDao {
 	Operation getById(long id);

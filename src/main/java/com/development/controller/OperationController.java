@@ -23,7 +23,7 @@ import com.development.model.ParkingLevel;
 import com.development.model.ParkingLot;
 import com.development.model.Vehicle;
 import com.development.model.VehicleType;
-import com.development.model.ViewGarageStatus;
+import com.development.model.GarageStatus;
 import com.development.service.OperationService;
 import com.development.service.ParkingLevelService;
 import com.development.service.ParkingLotService;
@@ -73,8 +73,8 @@ public class OperationController {
 	 }
 	 
 	 @ModelAttribute("garageStatus")
-	 public List<ViewGarageStatus> getParkingLots() {
-	   List<ViewGarageStatus> garageStatuses = parkingLotService.getGerageStatus();
+	 public List<GarageStatus> getParkingLots() {
+	   List<GarageStatus> garageStatuses = parkingLotService.getGerageStatus();
 	   return garageStatuses;
 	 }
 	 

@@ -7,7 +7,7 @@ import javax.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
 import com.development.model.ParkingLot;
-import com.development.model.ViewGarageStatus;
+import com.development.model.GarageStatus;
 
 @Repository("parkingLotDao")
 public class ParkingLotDaoImpl extends AbstractDao<Integer, ParkingLot> implements ParkingLotDao {
@@ -74,12 +74,12 @@ public class ParkingLotDaoImpl extends AbstractDao<Integer, ParkingLot> implemen
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<ViewGarageStatus> getGerageStatus() {
+	public List<GarageStatus> getGerageStatus() {
 		final String NATIVE_SQL = "SELECT  `level`.`LEVEL_NAME` AS `level_name`,  `level`.`CAPACITY` AS `capacity`,  SUM(`t_parking_lot`.`IS_FREE`) AS `free`,  (SELECT       COUNT(0)     FROM `t_parking_lot`    WHERE (`t_parking_lot`.`IS_FREE` = 0)) AS `used` FROM (`t_parking_lot`  LEFT JOIN `t_parking_level` `level`    ON ((`t_parking_lot`.`PARKING_LEVEL_ID` = `level`.`ID`))) WHERE (`t_parking_lot`.`IS_FREE` = 1) GROUP BY `t_parking_lot`.`PARKING_LEVEL_ID`,`used`;";
 		EntityManager entityManager = getEntityManager();
 		entityManager.clear();
-		List<ViewGarageStatus> garageStatus = entityManager
-				.createNativeQuery(NATIVE_SQL, ViewGarageStatus.class)
+		List<GarageStatus> garageStatus = entityManager
+				.createNativeQuery(NATIVE_SQL, GarageStatus.class)
 				.getResultList();
 		return garageStatus;
 	}

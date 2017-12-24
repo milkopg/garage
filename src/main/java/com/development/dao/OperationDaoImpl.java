@@ -8,7 +8,7 @@ import javax.persistence.TemporalType;
 import org.springframework.stereotype.Repository;
 
 import com.development.model.Operation;
-import com.development.model.ViewGarageStatus;
+import com.development.model.GarageStatus;
 
 @Repository("operationDao")
 public class OperationDaoImpl extends AbstractDao<Long, Operation> implements OperationDao {

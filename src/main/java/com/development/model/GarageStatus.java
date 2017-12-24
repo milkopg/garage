@@ -16,12 +16,11 @@ import org.hibernate.annotations.Subselect;
 @NamedNativeQuery(
 	    name="myQuery",
 	    query = "SELECT PARKING_LEVEL_ID, Sum(IS_FREE) free, (SELECT COUNT(*)  FROM t_parking_lot WHERE IS_FREE = 0) used  FROM t_parking_lot  where is_free = 1  group by PARKING_LEVEL_ID, used;",
-	    resultClass=ViewGarageStatus.class
+	    resultClass=GarageStatus.class
 	)
 @Entity
 @Immutable
-//@Table(name="V_GARAGE_STATUS")
-public class ViewGarageStatus implements Serializable{
+public class GarageStatus implements Serializable{
 	/**
 	 * 
 	 */
@@ -94,7 +93,7 @@ public class ViewGarageStatus implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ViewGarageStatus other = (ViewGarageStatus) obj;
+		GarageStatus other = (GarageStatus) obj;
 		if (capacity == null) {
 			if (other.capacity != null)
 				return false;

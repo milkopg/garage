@@ -3,7 +3,7 @@ package com.development.dao;
 import java.util.List;
 
 import com.development.model.ParkingLot;
-import com.development.model.ViewGarageStatus;
+import com.development.model.GarageStatus;
 
 public interface ParkingLotDao {
 	ParkingLot getById(int id);
@@ -12,7 +12,7 @@ public interface ParkingLotDao {
 	List<ParkingLot> getFreeLotsByParkingLevel(int parkingLevelId);
 	List<ParkingLot> getUsedLotsByParkingLevel(int parkingLevelId);
 	List<ParkingLot> getAllLots();
-	List<ViewGarageStatus> getGerageStatus();
+	List<GarageStatus> getGerageStatus();
 	void save (ParkingLot parkingLot);
 	void update (ParkingLot parkingLot);
 	void deleteByName(String name);
