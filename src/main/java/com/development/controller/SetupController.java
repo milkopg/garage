@@ -20,6 +20,7 @@ import com.development.model.Operation;
 import com.development.model.ParkingLevel;
 import com.development.model.Vehicle;
 import com.development.model.VehicleType;
+import com.development.service.OperationService;
 import com.development.service.VehicleTypeService;
 
 @Controller
@@ -30,6 +31,9 @@ public class SetupController {
 	
 	@Autowired
 	VehicleTypeService vehicleTypeService;
+	
+	@Autowired
+	OperationService operationService;
 	
 	@RequestMapping(value = {"setup" }, method = RequestMethod.GET)
 	public ModelAndView setup() {
@@ -56,8 +60,27 @@ public class SetupController {
 		 vehicleTypeService.save(vehicleType);
 		 modelMap.addAttribute("vehicleTypes", getVehicleTypes());
 		 return model;
-		
 	}
+
+	@RequestMapping(value = "removeVehicleType", method = RequestMethod.POST)
+	public ModelAndView removeVehicleType(@Valid VehicleType vehicleType, BindingResult result, ModelMap modelMap) {
+		 ModelAndView model =  new ModelAndView("setup");
+		 String name = vehicleType.getName();
+		 if (name == null) {
+			 model.addObject(Constants.ERROR_MESSAGE_OBJECT_NAME, messageSource.getMessage("NotEmpty.vehicleType.name", null, Locale.getDefault()));
+			 return model;
+		 }
+		 List<Operation> operations = operationService.getOperationsByVehicleTypeName(name);
+		 if (operations != null && !operations.isEmpty()) {
+			 model.addObject(Constants.ERROR_MESSAGE_OBJECT_NAME, messageSource.getMessage("error.vehicleType.delete.haverecords", null, Locale.getDefault()));
+			 return model;
+		 }
+		 VehicleType vehicleTypeForDelete = vehicleTypeService.getByName(name);
+		 vehicleTypeService.deleteByVehicleTypeName(vehicleTypeForDelete.getName());
+		 modelMap.addAttribute("vehicleTypes", getVehicleTypes());
+		 return model;
+	}
+
 	
 	 @ModelAttribute("vehicleTypes")
 	 public List<VehicleType> getVehicleTypes() {

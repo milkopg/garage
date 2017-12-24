@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.development.model.Operation;
-import com.development.model.GarageStatus;
 
 public interface OperationDao {
 	Operation getById(long id);
@@ -17,6 +16,7 @@ public interface OperationDao {
 	List<Operation> getOperationsByParkingLevelName(String name);
 	List<Operation> getOperationsByPlateNumberForEnteredVehicles(String plateNumber);
 	List<Operation> getOperationsByPlateNumberForExitedVehicles(String plateNumber);
+	List<Operation> getOperationsByVehicleTypeName(String name);
 	boolean isVehicleInParking(String plateNumber);
 	boolean isVehicleAlreadyExit(String plateNumber);
 	void save(Operation operation);

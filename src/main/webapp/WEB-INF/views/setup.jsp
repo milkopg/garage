@@ -1,13 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@include file="taglibs.jsp"%>
+<%@include file="master.jsp"%>
 
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title><spring:message code="garage.setup.title"></spring:message></title>
-</head>
+
 <body>
 		<form method="POST" action="addVehicleType"> 
 			<hr/>
@@ -24,17 +18,30 @@
 				  </tr>
 				  </c:forEach>
 				</table>
-				<hr/>
+				<div class="divider"></div>
+				<br>
 				<div>
 					<label><spring:message code="vehicleType.add"></spring:message></label>
 					<form:input path="vehicleType.name" class="form-control"/>
-						<%-- <form:button></form:button> --%>
-				 	<button type="submit" class="btn btn-default">Submit</button>
+				 	<button type="submit" class="btn btn-default"><spring:message code="vehicleType.button.add"></spring:message></button>
 				</div>
-			
 				<br>
 		    </div>
 		</form>
+		<form method="POST" action="removeVehicleType">
+			<br>
+				<div>
+					<label><spring:message code="vehicleType.remove"></spring:message></label>
+					<form:select path="vehicleType.name" id="vehicleType.name">
+		    			<form:options items="${vehicleTypes}" itemValue="name" itemLabel="name"/>
+		    		</form:select>
+		    		<button type="submit" class="btn btn-default"><spring:message code="vehicleType.button.remove"></spring:message></button>
+		    		<c:if test="${not empty msg}">
+						<strong style="color: red; font-size: 16px">${msg}</strong>
+					</c:if>
+				</div>
+		</form>
+				<hr/>
 		    
 </body>
 </html>

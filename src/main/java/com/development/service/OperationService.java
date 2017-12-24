@@ -17,6 +17,7 @@ public interface OperationService {
 	List<Operation> getOperationsByPlateNumber(String plateNumber);
 	List<Operation> getOperationsByParkingLotName(String name);
 	List<Operation> getOperationsByParkingLevelName(String name);
+	List<Operation> getOperationsByVehicleTypeName(String name);
 	void enterCar(String plateNumber, VehicleType vehicleType);
 	int exitCar (String plateNumber);
 	boolean isVehicleInParking(String plateNumber);

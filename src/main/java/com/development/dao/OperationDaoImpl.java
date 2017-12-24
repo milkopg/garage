@@ -8,7 +8,6 @@ import javax.persistence.TemporalType;
 import org.springframework.stereotype.Repository;
 
 import com.development.model.Operation;
-import com.development.model.GarageStatus;
 
 @Repository("operationDao")
 public class OperationDaoImpl extends AbstractDao<Long, Operation> implements OperationDao {
@@ -123,6 +122,15 @@ public class OperationDaoImpl extends AbstractDao<Long, Operation> implements Op
 		List<Operation> operationsFinished = getOperationsByPlateNumberForExitedVehicles(plateNumber);
 		List<Operation> allOperations = getOperationsByPlateNumber(plateNumber);
 		return operationsFinished != null && allOperations != null ? operationsFinished.size() != allOperations.size() : false;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Operation> getOperationsByVehicleTypeName(String name) {
+		List<Operation> operations = getEntityManager()
+				.createQuery("SELECT o FROM Operation o where o.vehicle.vehicleType.name = :name")
+				.setParameter("name", name)
+				.getResultList();
+		return operations;
 	}
 
 }
