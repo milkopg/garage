@@ -57,9 +57,6 @@ public class Vehicle implements Serializable{
 		this.vehicleType = vehicleType;
 	}
 
-	
-	
-	
 
 	@Override
 	public int hashCode() {

@@ -46,7 +46,7 @@
 		    		<form:options items="${parkingLevels}" itemValue="levelName" itemLabel="levelName" />
 		    	</form:select>
 		    </div>
-				 <hr/>
+			 <hr/>
 		     <div>
 		    	<table id="parkingLotTable" border="1" class="table table-striped" >
 				  <tr>
@@ -64,9 +64,32 @@
 				  </tr>
 				  </c:forEach>
 				</table>
-				
 				<br>
 		    </div>
+		    <c:if test="${not empty operations}"> 
+			 <hr/>
+		   		<div>
+			    	<table id="vehicleStatusTable" border="1" class="table table-striped" >
+					  <tr>
+					    <th> <spring:message code="vehicle.plateNumber"></spring:message></th>
+					    <th> <spring:message code="parkingLevel.name"></spring:message></th> 
+					    <th> <spring:message code="parkingLot.name"></spring:message></th>
+					    <th> <spring:message code="operation.timeEnter"></spring:message></th>
+					    <th> <spring:message code="operation.timeExit"></spring:message></th>
+					 </tr>
+					 <c:forEach var="operation" varStatus="status" items="${operations}">
+					  <tr>
+					    <td>${operation.vehicle.plateNumber}</td>
+					    <td>${operation.parkingLot.parkingLevel.levelName}</td> 
+					    <td>${operation.parkingLot.name}</td> 
+					    <td>${operation.timeEnter}</td> 
+					     <td>${operation.timeExit}</td> 
+					  </tr>
+					  </c:forEach>
+					</table>
+					<br>
+			    </div>
+		    </c:if>
 		    <hr/>
 			  <button type="submit" class="btn btn-default">Submit</button>
 			  <hr/>

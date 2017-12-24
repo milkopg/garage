@@ -8,6 +8,7 @@ import javax.persistence.TemporalType;
 import org.springframework.stereotype.Repository;
 
 import com.development.model.Operation;
+import com.development.model.ViewGarageStatus;
 
 @Repository("operationDao")
 public class OperationDaoImpl extends AbstractDao<Long, Operation> implements OperationDao {
@@ -55,7 +56,7 @@ public class OperationDaoImpl extends AbstractDao<Long, Operation> implements Op
 	@SuppressWarnings("unchecked")
 	public List<Operation> getOperationsByPlateNumber(String plateNumber) {
 		 List<Operation> operations = getEntityManager()
-				 .createQuery("SELECT o FROM Operation o where o.vehicle.plateNumber LIKE :plateNumber")
+				 .createQuery("SELECT o FROM Operation o where o.vehicle.plateNumber LIKE :plateNumber ORDER BY o.id DESC")
 				 .setParameter("plateNumber", plateNumber)
 				 .getResultList();
 		return operations;		
@@ -73,7 +74,7 @@ public class OperationDaoImpl extends AbstractDao<Long, Operation> implements Op
 	@SuppressWarnings("unchecked")
 	public List<Operation> getOperationsByParkingLevelName(String name) {
 		 List<Operation> operations = getEntityManager()
-				 .createQuery("SELECT o FROM Operation o where o.parkingLot.parkingLevel.name LIKE :name")
+				 .createQuery("SELECT o FROM Operation o where o.parkingLot.parkingLevel.levelName LIKE :name")
 				 .setParameter("name", name)
 				 .getResultList();
 		return operations;
@@ -106,7 +107,7 @@ public class OperationDaoImpl extends AbstractDao<Long, Operation> implements Op
 	@SuppressWarnings("unchecked")
 	public List<Operation> getOperationsByPlateNumberForExitedVehicles(String plateNumber) {
 		 List<Operation> operations = getEntityManager()
-				 .createQuery("SELECT o FROM Operation o where o.vehicle.plateNumber LIKE :plateNumber  AND o.timeEnter IS NOT NULL AND o.timeExit IS NOT NULL")
+				 .createQuery("SELECT o FROM Operation o where o.vehicle.plateNumber LIKE :plateNumber  AND o.timeEnter IS NOT NULL and o.timeExit IS NOT NULL")
 				 .setParameter("plateNumber", plateNumber)
 				 .getResultList();
 		return operations;
@@ -119,7 +120,9 @@ public class OperationDaoImpl extends AbstractDao<Long, Operation> implements Op
 	}
 
 	public boolean isVehicleAlreadyExit(String plateNumber) {
-		List<Operation> operations = getOperationsByPlateNumberForExitedVehicles(plateNumber);
-		return operations != null && operations.size() > 0;
+		List<Operation> operationsFinished = getOperationsByPlateNumberForExitedVehicles(plateNumber);
+		List<Operation> allOperations = getOperationsByPlateNumber(plateNumber);
+		return operationsFinished != null && allOperations != null ? operationsFinished.size() != allOperations.size() : false;
 	}
+
 }

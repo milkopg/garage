@@ -125,7 +125,20 @@ CREATE OR REPLACE
 	DEFINER = 'root'@'localhost'
 VIEW v_garage_status
 AS
-	select `t_parking_lot`.`PARKING_LEVEL_ID` AS `PARKING_LEVEL_ID`,sum(`t_parking_lot`.`IS_FREE`) AS `free`,(select count(0) from `t_parking_lot` where (`t_parking_lot`.`IS_FREE` = 0)) AS `used` from `t_parking_lot` where (`t_parking_lot`.`IS_FREE` = 1) group by `t_parking_lot`.`PARKING_LEVEL_ID`,`used`;
+	SELECT
+  `level`.`LEVEL_NAME` AS `level_name`,
+  `level`.`CAPACITY` AS `capacity`,
+  SUM(`t_parking_lot`.`IS_FREE`) AS `free`,
+  (SELECT
+      COUNT(0)
+    FROM `t_parking_lot`
+    WHERE (`t_parking_lot`.`IS_FREE` = 0)) AS `used`
+FROM (`t_parking_lot`
+  LEFT JOIN `t_parking_level` `level`
+    ON ((`t_parking_lot`.`PARKING_LEVEL_ID` = `level`.`ID`)))
+WHERE (`t_parking_lot`.`IS_FREE` = 1)
+GROUP BY `t_parking_lot`.`PARKING_LEVEL_ID`,
+         `used`
 
 -- 
 -- Dumping data for table t_operation

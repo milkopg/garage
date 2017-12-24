@@ -40,6 +40,9 @@ public class VehicleType implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -69,7 +72,6 @@ public class VehicleType implements Serializable{
 			return false;
 		return true;
 	}
-	
 	@Override
 	public String toString() {
 		return "VehicleType id: " + getId() + ", name: " + getName();

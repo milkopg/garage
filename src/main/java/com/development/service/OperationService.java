@@ -6,6 +6,7 @@ import java.util.List;
 import com.development.model.Operation;
 import com.development.model.ParkingLot;
 import com.development.model.VehicleType;
+import com.development.model.ViewGarageStatus;
 
 public interface OperationService {
 	Operation getById(long id);

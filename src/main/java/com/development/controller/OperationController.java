@@ -28,7 +28,6 @@ import com.development.service.OperationService;
 import com.development.service.ParkingLevelService;
 import com.development.service.ParkingLotService;
 import com.development.service.VehicleTypeService;
-import com.development.service.ViewGarageStatusService;
 
 @Controller
 @RequestMapping("/")
@@ -42,9 +41,6 @@ public class OperationController {
 	
 	@Autowired
 	ParkingLotService parkingLotService;
-	
-	@Autowired
-	ViewGarageStatusService garageStatusService;
 	
 	@Autowired
 	VehicleTypeService vehicleTypeService;
@@ -78,10 +74,10 @@ public class OperationController {
 	 
 	 @ModelAttribute("garageStatus")
 	 public List<ViewGarageStatus> getParkingLots() {
-	   List<ViewGarageStatus> garageStatuses = garageStatusService.getGarageStatuses();
+	   List<ViewGarageStatus> garageStatuses = parkingLotService.getGerageStatus();
 	   return garageStatuses;
 	 }
-
+	 
 	@Transactional
 	private void initData() {
 		List<ParkingLot> parkingLots = parkingLotService.getAllLots();
@@ -137,32 +133,34 @@ public class OperationController {
 		
 		validateEmptyVehicleNumber(model, vehicle);
 		validateCarAlreadyEntered(model, vehicle, operationType);
-		validateCarExitTwice(model, vehicle, operationType);
+		//validateCarExitTwice(model, vehicle, operationType);
 		if (model.getModelMap().containsKey(Constants.ERROR_MESSAGE_OBJECT_NAME)) {
 			return model;
 		}
 		model = new ModelAndView("home");
-		processOperation(operationType, vehicle, vehicleType);
-		modelMap.addAttribute("garageStatus", getParkingLots());
+		processOperation(modelMap, operationType, vehicle, vehicleType);
 		return model;
 	}
 
 	
 	
 
-	private void processOperation(int operationType, Vehicle vehicle, VehicleType vehicleType) {
+	private void processOperation(ModelMap modelMap, int operationType, Vehicle vehicle, VehicleType vehicleType) {
 		switch (OperationType.valueOf(operationType)) {
 		case ENTER:
 			VehicleType vType = vehicleTypeService.getByName(vehicleType.getName());
 			operationService.enterCar(vehicle.getPlateNumber(), vType);
+			modelMap.addAttribute("garageStatus", getParkingLots());
 			break;
 		case EXIT:
 			operationService.exitCar(vehicle.getPlateNumber());
+			modelMap.addAttribute("garageStatus", getParkingLots());
 			break;
 		case STATUS:
 			List<Operation> operations = operationService.getOperationsByPlateNumber(vehicle.getPlateNumber());
+			modelMap.addAttribute("operations", operations);
 			break;
-		default:
+		case DEVICE_UNKNOWN:
 			break;
 		}
 	}
