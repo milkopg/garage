@@ -79,7 +79,7 @@ public class OperationController {
 	 }
 	 
 	@RequestMapping(value = "home", method = RequestMethod.POST)
-	public ModelAndView process(@Valid Operation operation, @Valid Vehicle vehicle, @Valid VehicleType vehicleType, 
+	public ModelAndView process(@Valid Operation operation, Vehicle vehicle, @Valid VehicleType vehicleType, 
 			@Valid ParkingLevel parkingLevel, BindingResult result, ModelMap modelMap) {
 		ModelAndView model =  new ModelAndView("home");
 		if (vehicle.getPlateNumber() == null) {

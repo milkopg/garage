@@ -27,6 +27,12 @@
 				</div>
 				<br>
 		    </div>
+		    <div>
+	    		<c:if test="${not empty msgVehicleTypeAdd}">
+					<strong style="color: red; font-size: 16px">${msgVehicleTypeAdd}</strong>
+				</c:if>
+		    	
+		    </div>
 		</form>
 		<form method="POST" action="removeVehicleType">
 			<br>
@@ -36,8 +42,8 @@
 		    			<form:options items="${vehicleTypes}" itemValue="name" itemLabel="name"/>
 		    		</form:select>
 		    		<button type="submit" class="btn btn-default"><spring:message code="vehicleType.button.remove"></spring:message></button>
-		    		<c:if test="${not empty msg}">
-						<strong style="color: red; font-size: 16px">${msg}</strong>
+		    		<c:if test="${not empty msgVehicleVypeRemove}">
+						<strong style="color: red; font-size: 16px">${msgVehicleVypeRemove}</strong>
 					</c:if>
 				</div>
 		</form>

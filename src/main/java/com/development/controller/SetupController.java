@@ -63,10 +63,10 @@ public class SetupController {
 	@RequestMapping(value = "addVehicleType", method = RequestMethod.POST)
 	public ModelAndView addVehicleType(@Valid VehicleType vehicleType, BindingResult result, ModelMap modelMap) {
 		 ModelAndView model =  new ModelAndView("setup");
-		 model.addObject("parkingLevel", new VehicleType());
+		 model.addObject("parkingLevel", new ParkingLevel());
 		 String name = vehicleType.getName();
-		 if (name == null) {
-			 model.addObject(Constants.ERROR_MESSAGE, messageSource.getMessage("NotEmpty.vehicleType.name", null, Locale.getDefault()));
+		 if (name == null || "".equals(name)) {
+			 model.addObject(Constants.ERROR_MESSAGE_VEHICLE_TYPE_ADD, messageSource.getMessage("NotEmpty.vehicleType.name", null, Locale.getDefault()));
 			 return model;
 		 }
 		 vehicleTypeService.save(vehicleType);
@@ -77,15 +77,15 @@ public class SetupController {
 	@RequestMapping(value = "removeVehicleType", method = RequestMethod.POST)
 	public ModelAndView removeVehicleType(@Valid VehicleType vehicleType, BindingResult result, ModelMap modelMap) {
 		 ModelAndView model =  new ModelAndView("setup");
-		 model.addObject("parkingLevel", new VehicleType());
+		 model.addObject("parkingLevel", new ParkingLevel());
 		 String name = vehicleType.getName();
 		 if (name == null) {
-			 model.addObject(Constants.ERROR_MESSAGE, messageSource.getMessage("NotEmpty.vehicleType.name", null, Locale.getDefault()));
+			 model.addObject(Constants.ERROR_MESSAGE_VEHICLE_TYPE_REMOVE, messageSource.getMessage("NotEmpty.vehicleType.name", null, Locale.getDefault()));
 			 return model;
 		 }
 		 List<Operation> operations = operationService.getOperationsByVehicleTypeName(name);
 		 if (operations != null && !operations.isEmpty()) {
-			 model.addObject(Constants.ERROR_MESSAGE, messageSource.getMessage("error.vehicleType.delete.haverecords", null, Locale.getDefault()));
+			 model.addObject(Constants.ERROR_MESSAGE_VEHICLE_TYPE_REMOVE, messageSource.getMessage("error.vehicleType.delete.haverecords", null, Locale.getDefault()));
 			 return model;
 		 }
 		 VehicleType vehicleTypeForDelete = vehicleTypeService.getByName(name);
@@ -123,7 +123,7 @@ public class SetupController {
 	}
 	
 	@RequestMapping(value = "removeParkingLevel", method = RequestMethod.POST)
-	public ModelAndView removeParkingLevel(@Valid ParkingLevel parkingLevel, BindingResult result, ModelMap modelMap) {
+	public ModelAndView removeParkingLevel(@Valid ParkingLevel parkingLevel, ModelMap modelMap) {
 		 ModelAndView model =  new ModelAndView("setup");
 		 model.addObject("vehicleType", new VehicleType());
 		 String name = parkingLevel.getLevelName();
@@ -131,13 +131,14 @@ public class SetupController {
 			 model.addObject(Constants.ERROR_MESSAGE_PARKING_LEVEL_REMOVE, messageSource.getMessage("NotEmpty.vehicleType.name", null, Locale.getDefault()));
 			 return model;
 		 }
-		 List<Operation> operations = operationService.getOperationsByVehicleTypeName(name);
+		
+		 List <Operation> operations = operationService.getOperationsByParkingLevelName(name);
 		 if (operations != null && !operations.isEmpty()) {
 			 model.addObject(Constants.ERROR_MESSAGE_PARKING_LEVEL_REMOVE, messageSource.getMessage("error.parkingLevel.delete.haverecords", null, Locale.getDefault()));
 			 return model;
 		 }
-		 ParkingLevel parkingLevelForDelete = parkingLevelService.getByName(name);
 		 
+		 ParkingLevel parkingLevelForDelete = parkingLevelService.getByName(name);
 		 parkingLotService.deleteByParkingLevel(parkingLevelForDelete);
 		 parkingLevelService.deleteByName(parkingLevelForDelete.getLevelName());
 		 parkingLotService.deleteByName(name);

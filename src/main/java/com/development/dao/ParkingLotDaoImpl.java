@@ -89,7 +89,7 @@ public class ParkingLotDaoImpl extends AbstractDao<Integer, ParkingLot> implemen
 	public void deleteByParkingLevel(ParkingLevel parkingLevel) {
 		Integer id = parkingLevel.getId();
 		List<ParkingLot> parkingLots = getEntityManager()
-				.createQuery("SELECT o FROM ParkingLot o where o.ParkingLevel.id =:id ")
+				.createQuery("SELECT o FROM ParkingLot o where o.parkingLevel.id =:id ")
 				.setParameter("id", id)
 				.getResultList();
 		for (ParkingLot lot : parkingLots) {
