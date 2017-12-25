@@ -22,7 +22,7 @@ public interface OperationService {
 	int exitCar (String plateNumber);
 	boolean isVehicleInParking(String plateNumber);
 	boolean isVehicleAlreadyExit(String plateNumber);
-	ParkingLot takeFirstAvailableParkingLot();
+	ParkingLot takeFirstAvailableParkingLot(ParkingLevel parkingLevel);
 	void save(Operation operation);
 	void update(Operation operation);
 	void deleteById(long operationId);

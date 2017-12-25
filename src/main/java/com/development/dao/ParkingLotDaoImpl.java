@@ -76,7 +76,7 @@ public class ParkingLotDaoImpl extends AbstractDao<Integer, ParkingLot> implemen
 
 	@SuppressWarnings("unchecked")
 	public List<GarageStatus> getGerageStatus() {
-		final String NATIVE_SQL = "SELECT  `level`.`LEVEL_NAME` AS `level_name`,  `level`.`CAPACITY` AS `capacity`,  SUM(`t_parking_lot`.`IS_FREE`) AS `free`,  (SELECT       COUNT(0)     FROM `t_parking_lot`    WHERE (`t_parking_lot`.`IS_FREE` = 0)) AS `used` FROM (`t_parking_lot`  LEFT JOIN `t_parking_level` `level`    ON ((`t_parking_lot`.`PARKING_LEVEL_ID` = `level`.`ID`))) WHERE (`t_parking_lot`.`IS_FREE` = 1) GROUP BY `t_parking_lot`.`PARKING_LEVEL_ID`,`used`;";
+		final String NATIVE_SQL = "SELECT  `level`.`LEVEL_NAME` AS `level_name`,  `level`.`CAPACITY` AS `capacity`,  SUM(`t_parking_lot`.`IS_FREE`) AS `free`,  (level.CAPACITY - SUM(`t_parking_lot`.`IS_FREE`)) AS `used` FROM (`t_parking_lot`  LEFT JOIN `t_parking_level` `level`    ON ((`t_parking_lot`.`PARKING_LEVEL_ID` = `level`.`ID`))) WHERE (`t_parking_lot`.`IS_FREE` = 1 ) GROUP BY `t_parking_lot`.`PARKING_LEVEL_ID`;";
 		EntityManager entityManager = getEntityManager();
 		entityManager.clear();
 		List<GarageStatus> garageStatus = entityManager
