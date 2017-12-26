@@ -69,10 +69,19 @@ public class SetupController {
 	 * @return
 	 */
 	@RequestMapping(value = {Constants.SCREEN_SETUP }, method = RequestMethod.GET)
-	public ModelAndView setup() {
-		ModelAndView mav = new ModelAndView(Constants.SCREEN_SETUP);
-		mav.addObject(Constants.MODEL_VEHICLE_TYPE, new VehicleType());
-		mav.addObject(Constants.MODEL_PARKINGL_LEVEL, new ParkingLevel());
+	public ModelAndView setup(ModelAndView mav, ParkingLevel parkingLevel, VehicleType vehicleType) {
+		if (mav == null) {
+			mav = new ModelAndView(Constants.SCREEN_SETUP);
+		}
+		if (parkingLevel == null) {
+			parkingLevel = new ParkingLevel();
+		}
+		
+		if (vehicleType == null) {
+			vehicleType = new VehicleType();
+		}
+		mav.addObject(Constants.MODEL_VEHICLE_TYPE, vehicleType);
+		mav.addObject(Constants.MODEL_PARKINGL_LEVEL, parkingLevel);
 		return mav;
 	}
 	
@@ -87,16 +96,16 @@ public class SetupController {
 	public ModelAndView addVehicleType(@Valid VehicleType vehicleType, BindingResult result, ModelMap modelMap) {
 		logger.trace("vehicleType: {}, result: {}, modelMap: {}", vehicleType, result, modelMap);
 		 ModelAndView model =  new ModelAndView(Constants.SCREEN_SETUP);
-		 model.addObject(Constants.MODEL_PARKINGL_LEVEL, new ParkingLevel());
+		 //model.addObject(Constants.MODEL_PARKINGL_LEVEL, new ParkingLevel());
 		 String name = vehicleType.getName();
 		 if (name == null || "".equals(name)) {
 			 model.addObject(Constants.ERROR_MESSAGE_VEHICLE_TYPE_ADD, messageSource.getMessage("NotEmpty.vehicleType.name", null, Locale.getDefault()));
-			 return model;
+			 return setup(model, null, vehicleType);
 		 }
 		 vehicleTypeService.save(vehicleType);
 		 logger.info("vehicleType with name : {} saved succefully", vehicleType.getName());
 		 modelMap.addAttribute(Constants.MODEL_LIST_VEHICLE_TYPE, getVehicleTypes());
-		 return setup();
+		 return setup(model, null, vehicleType);
 	}
 
 	/**
@@ -110,24 +119,24 @@ public class SetupController {
 	public ModelAndView removeVehicleType(@Valid VehicleType vehicleType, BindingResult result, ModelMap modelMap) {
 		logger.trace("vehicleType: {}, result: {}, modelMap: {}", vehicleType, result, modelMap);
 		 ModelAndView model =  new ModelAndView(Constants.SCREEN_SETUP);
-		 model.addObject(Constants.MODEL_PARKINGL_LEVEL, new ParkingLevel());
+		 //model.addObject(Constants.MODEL_PARKINGL_LEVEL, new ParkingLevel());
 		 String name = vehicleType.getName();
 		 if (name == null) {
 			 model.addObject(Constants.ERROR_MESSAGE_VEHICLE_TYPE_REMOVE, messageSource.getMessage("NotEmpty.vehicleType.name", null, Locale.getDefault()));
 			 logger.warn("You haven't choose a valid vehicleType name : {}", name);
-			 return model;
+			 return setup(model, null, null);
 		 }
 		 List<Operation> operations = operationService.getOperationsByVehicleTypeName(name);
 		 if (operations != null && !operations.isEmpty()) {
 			 model.addObject(Constants.ERROR_MESSAGE_VEHICLE_TYPE_REMOVE, messageSource.getMessage("error.vehicleType.delete.haverecords", null, Locale.getDefault()));
 			 logger.warn("Cannot remove current vehicleType name: {}. There is a operations via this vehicleType", name);
-			 return model;
+			 return setup(model, null, null);
 		 }
 		 VehicleType vehicleTypeForDelete = vehicleTypeService.getByName(name);
 		 vehicleTypeService.deleteByVehicleTypeName(vehicleTypeForDelete.getName());
 		 logger.info("Removed successfully vehicleType with name: {}", name);
 		 modelMap.addAttribute(Constants.MODEL_LIST_VEHICLE_TYPE, getVehicleTypes());
-		 return setup();
+		 return setup(model, null, null);
 	}
 	
 	/**
@@ -142,25 +151,25 @@ public class SetupController {
 		logger.trace("parkingLevel: {}, result: {}, modelMap: {}", parkingLevel, result, modelMap);
 		 ModelAndView model =  new ModelAndView(Constants.SCREEN_SETUP);
 		 //adding empty vehicleType object to jsp
-		 model.addObject(Constants.MODEL_VEHICLE_TYPE, new VehicleType());
+		 //model.addObject(Constants.MODEL_VEHICLE_TYPE, new VehicleType());
 		 String name = parkingLevel.getLevelName();
 		 if (name == null) {
 			 model.addObject(Constants.ERROR_MESSAGE_PARKING_LEVEL_ADD, messageSource.getMessage("NotEmpty.parkingLevel.name", null, Locale.getDefault()));
 			 logger.warn("Empty of non valid parking level name: {}", name);
-			 return model;
+			 return setup(model, parkingLevel, null);
 		 }
 		 
 		 if (parkingLevel.getCapacity() == null) {
 			 model.addObject(Constants.ERROR_MESSAGE_PARKING_LEVEL_ADD, messageSource.getMessage("NotEmpty.parkingLevel.capacity", null, Locale.getDefault()));
 			 logger.warn("Not valid capacity number: {}", parkingLevel.getCapacity());
-			 return model;
+			 return setup(model, parkingLevel, null);
 		 }
 		 
 		 Integer startNumber = parkingLevel.getStartNumber();
 		 if (startNumber == null) {
 			 model.addObject(Constants.ERROR_MESSAGE_PARKING_LEVEL_ADD, messageSource.getMessage("NotEmpty.parkingLevel.startNumber", null, Locale.getDefault()));
 			 logger.warn("Not valid startNumber number: {}", startNumber);
-			 return model;
+			 return setup(model, parkingLevel, null);
 		 }
 		
 		 parkingLevelService.save(parkingLevel);
@@ -168,7 +177,7 @@ public class SetupController {
 		 //add appropriate parking lots according configuration
 		 dataManager.initData(startNumber, parkingLevel);
 		 modelMap.addAttribute(Constants.MODEL_LIST_PARKING_LEVEL, getParkingLevels());
-		 return setup();
+		 return setup(model, parkingLevel, null);
 	}
 	
 	/**
@@ -182,19 +191,19 @@ public class SetupController {
 	public ModelAndView removeParkingLevel(@Valid ParkingLevel parkingLevel, ModelMap modelMap) {
 		logger.trace("parkingLevel: {}, modelMap: {}", parkingLevel, modelMap);
 		 ModelAndView model =  new ModelAndView(Constants.SCREEN_SETUP);
-		 model.addObject(Constants.MODEL_VEHICLE_TYPE, new VehicleType());
+		// model.addObject(Constants.MODEL_VEHICLE_TYPE, new VehicleType());
 		 String name = parkingLevel.getLevelName();
 		 if (name == null) {
 			 model.addObject(Constants.ERROR_MESSAGE_PARKING_LEVEL_REMOVE, messageSource.getMessage("NotEmpty.parkingLevel.name", null, Locale.getDefault()));
 			 logger.warn("Not a valid or null parkingLevel name: {}", name);
-			 return model;
+			 return setup(model, null, null);
 		 }
 		
 		 List <Operation> operations = operationService.getOperationsByParkingLevelName(name);
 		 if (operations != null && !operations.isEmpty()) {
 			 model.addObject(Constants.ERROR_MESSAGE_PARKING_LEVEL_REMOVE, messageSource.getMessage("error.parkingLevel.delete.haverecords", null, Locale.getDefault()));
 			 logger.warn("There are an operations related to this level : {}", name);
-			 return model;
+			 return setup(model, null, null);
 		 }
 		 
 		 ParkingLevel parkingLevelForDelete = parkingLevelService.getByName(name);
@@ -205,7 +214,7 @@ public class SetupController {
 		 logger.info("Removed parkintLots with name: {}", name);
 		 
 		 modelMap.addAttribute(Constants.MODEL_LIST_PARKING_LEVEL, getParkingLevels());
-		 return setup();
+		 return setup(model, parkingLevelForDelete, null);
 	}
 
 	/**

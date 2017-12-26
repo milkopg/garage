@@ -124,7 +124,7 @@ public class OperationController {
 			return model;
 		} 
 		
-		validateEmptyVehicleNumber(model, vehicle);
+		validateEmptyVehicleNumber(model, vehicle, operationType);
 		validateCarAlreadyEntered(model, vehicle, operationType);
 		if (model.getModelMap().containsKey(Constants.ERROR_MESSAGE)) {
 			logger.info("process contains errors");
@@ -166,7 +166,12 @@ public class OperationController {
 			break;
 		case STATUS:
 			logger.info("Get Status of car with plateNumber: {}", vehicle.getPlateNumber());
-			List<Operation> operations = operationService.getOperationsByPlateNumber(vehicle.getPlateNumber());
+			List<Operation> operations;
+			if ("".equals(vehicle.getPlateNumber())) {
+				operations = operationService.getOperationsByParkingLevelName(parkingLevel.getLevelName());
+			} else {
+				operations = operationService.getOperationsByPlateNumber(vehicle.getPlateNumber());
+			}
 			modelMap.addAttribute("operations", operations);
 			break;
 		case UNKNOWN:
@@ -178,9 +183,11 @@ public class OperationController {
 	 * Check for empty vehicle plate number and returns validation error if appears
 	 * @param model ModelAndView to which view should be added error message
 	 * @param vehicle where is get plate number
+	 * @param operationType 
 	 */
-	private void validateEmptyVehicleNumber(ModelAndView model, Vehicle vehicle) {
+	private void validateEmptyVehicleNumber(ModelAndView model, Vehicle vehicle, int operationType) {
 		logger.trace("model: {}, vehicle: {}", model, vehicle);
+		if (operationType == OperationType.STATUS.getValue()) return;
 		if (vehicle == null || vehicle.getPlateNumber() == null || vehicle.getPlateNumber().length() < 2) {
 		    model.addObject(Constants.ERROR_MESSAGE, messageSource.getMessage("NotEmpty.vehicle.plateNumber", null, Locale.getDefault()));
 		    logger.warn("Empty or short vehicle number: {}", vehicle.getPlateNumber());

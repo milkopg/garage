@@ -93,8 +93,8 @@
 						<th></th>
 						<th><button type="submit" class="btn btn-default" style="float:right;"><spring:message code="parkingLevel.button.add"></spring:message></button></th>
 						<c:if test="${not empty msgParkingLevelAdd}">
-						<strong style="color: red; font-size: 16px">${msgParkingLevelAdd}</strong>
-					</c:if>
+							<strong style="color: red; font-size: 16px">${msgParkingLevelAdd}</strong>
+						</c:if>
 					</tr>
 				</table>
 				</div>
