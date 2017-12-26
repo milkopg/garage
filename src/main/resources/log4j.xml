@@ -12,7 +12,7 @@
 	</appender>
 	
 	<appender name="user" class="org.apache.log4j.FileAppender">
-		<param name="File" value="D:/Logs/webStore_User.log" />
+		<param name="File" value="D:/Logs/garage_User.log" />
 		<param name="threshold" value="debug"/>
        <layout class="org.apache.log4j.PatternLayout">
           <param name="ConversionPattern" value="%-7p %d [%t] %c %x - %m%n"/>
@@ -20,14 +20,14 @@
 	</appender>
 	
 	<appender name="system" class="org.apache.log4j.FileAppender">
-		<param name="File" value="D:/Logs/webStore_System.log" />
+		<param name="File" value="D:/Logs/garage_System.log" />
        <layout class="org.apache.log4j.PatternLayout">
           <param name="ConversionPattern" value="%-7p %d [%t] %c %x - %m%n"/>
        </layout>
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.softuni.webstore.system">
+	<logger name="com.development.system">
 		<!-- <level value="ERROR"></level> -->
 		<appender-ref ref="system"/>
 	</logger>
@@ -36,7 +36,7 @@
 	    <level value="DEBUG" />
 	</logger>
 	 -->
-	<logger name="com.softuni.webstore.user">
+	<logger name="com.development.user">
 		<level value="DEBUG"></level>
 		<appender-ref ref="user"/>
 	</logger>

@@ -1,7 +1,7 @@
 package com.development.model;
 
 public enum OperationType {
-	DEVICE_UNKNOWN(-1),
+	UNKNOWN(-1),
 	ENTER(1),
 	EXIT(2),
 	STATUS(3);
@@ -22,7 +22,7 @@ public enum OperationType {
 				return operationType;
 			}
 		}
-		return DEVICE_UNKNOWN;
+		return UNKNOWN;
 	}
 	
 	@Override

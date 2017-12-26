@@ -6,6 +6,8 @@ import java.util.Locale;
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -26,8 +28,15 @@ import com.development.service.ParkingLevelService;
 import com.development.service.ParkingLotService;
 import com.development.service.VehicleTypeService;
 
+/**
+ * Controller class for initial garage parking settings like create VehicleType, create parking levels, create parking lots, etc
+ * @author Milko
+ *
+ */
 @Controller
 public class SetupController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(SetupController.class);
 	
 	@Autowired
 	MessageSource messageSource;
@@ -46,38 +55,53 @@ public class SetupController {
 	
 	private DataInitManager dataManager;
 	
+	/**
+	 * get instance of DataInit manager when dependency injection is loaded
+	 * @throws Exception
+	 */
 	@PostConstruct
 	public void initIt() throws Exception {
 		dataManager = new DataInitManager(parkingLotService);		
 	}
 	
-	@RequestMapping(value = {"setup" }, method = RequestMethod.GET)
+	/**
+	 * Default view of setup screen. It loads empty models of vehicleType and parkingLevel
+	 * @return
+	 */
+	@RequestMapping(value = {Constants.SCREEN_SETUP }, method = RequestMethod.GET)
 	public ModelAndView setup() {
-		ModelAndView mav = new ModelAndView("setup");
-		mav.addObject("vehicleType", new VehicleType());
-		mav.addObject("parkingLevel", new ParkingLevel());
+		ModelAndView mav = new ModelAndView(Constants.SCREEN_SETUP);
+		mav.addObject(Constants.MODEL_VEHICLE_TYPE, new VehicleType());
+		mav.addObject(Constants.MODEL_PARKINGL_LEVEL, new ParkingLevel());
 		return mav;
 	}
 	
-	
-	@RequestMapping(value = "addVehicleType", method = RequestMethod.POST)
+	/**
+	 * POST method of addVehicleType operation
+	 * @param vehicleType - to take type of vehicle
+	 * @param result - to take validation errors
+	 * @param modelMap to add error message attribute
+	 * @return ModelAndView of added vehicleType
+	 */
+	@RequestMapping(value = Constants.OPERATION_ADD_VEHICLE_TYPE, method = RequestMethod.POST)
 	public ModelAndView addVehicleType(@Valid VehicleType vehicleType, BindingResult result, ModelMap modelMap) {
-		 ModelAndView model =  new ModelAndView("setup");
-		 model.addObject("parkingLevel", new ParkingLevel());
+		logger.trace("vehicleType: {}, result: {}, modelMap: {}", vehicleType, result, modelMap);
+		 ModelAndView model =  new ModelAndView(Constants.SCREEN_SETUP);
+		 model.addObject(Constants.MODEL_PARKINGL_LEVEL, new ParkingLevel());
 		 String name = vehicleType.getName();
 		 if (name == null || "".equals(name)) {
 			 model.addObject(Constants.ERROR_MESSAGE_VEHICLE_TYPE_ADD, messageSource.getMessage("NotEmpty.vehicleType.name", null, Locale.getDefault()));
 			 return model;
 		 }
 		 vehicleTypeService.save(vehicleType);
-		 modelMap.addAttribute("vehicleTypes", getVehicleTypes());
+		 modelMap.addAttribute(Constants.MODEL_LIST_VEHICLE_TYPE, getVehicleTypes());
 		 return setup();
 	}
 
-	@RequestMapping(value = "removeVehicleType", method = RequestMethod.POST)
+	@RequestMapping(value = Constants.OPERATION_REMOVE_VEHICLE_TYPE, method = RequestMethod.POST)
 	public ModelAndView removeVehicleType(@Valid VehicleType vehicleType, BindingResult result, ModelMap modelMap) {
-		 ModelAndView model =  new ModelAndView("setup");
-		 model.addObject("parkingLevel", new ParkingLevel());
+		 ModelAndView model =  new ModelAndView(Constants.SCREEN_SETUP);
+		 model.addObject(Constants.MODEL_PARKINGL_LEVEL, new ParkingLevel());
 		 String name = vehicleType.getName();
 		 if (name == null) {
 			 model.addObject(Constants.ERROR_MESSAGE_VEHICLE_TYPE_REMOVE, messageSource.getMessage("NotEmpty.vehicleType.name", null, Locale.getDefault()));
@@ -90,14 +114,14 @@ public class SetupController {
 		 }
 		 VehicleType vehicleTypeForDelete = vehicleTypeService.getByName(name);
 		 vehicleTypeService.deleteByVehicleTypeName(vehicleTypeForDelete.getName());
-		 modelMap.addAttribute("vehicleTypes", getVehicleTypes());
+		 modelMap.addAttribute(Constants.MODEL_LIST_VEHICLE_TYPE, getVehicleTypes());
 		 return setup();
 	}
 	
-	@RequestMapping(value = "addParkingLevel", method = RequestMethod.POST)
+	@RequestMapping(value = Constants.OPERATION_ADD_PARKING_LEVEL, method = RequestMethod.POST)
 	public ModelAndView addParkingLevel(@Valid ParkingLevel parkingLevel, BindingResult result, ModelMap modelMap) {
-		 ModelAndView model =  new ModelAndView("setup");
-		 model.addObject("vehicleType", new VehicleType());
+		 ModelAndView model =  new ModelAndView(Constants.SCREEN_SETUP);
+		 model.addObject(Constants.MODEL_VEHICLE_TYPE, new VehicleType());
 		 String name = parkingLevel.getLevelName();
 		 if (name == null) {
 			 model.addObject(Constants.ERROR_MESSAGE_PARKING_LEVEL_ADD, messageSource.getMessage("NotEmpty.parkingLevel.name", null, Locale.getDefault()));
@@ -118,14 +142,14 @@ public class SetupController {
 		 
 		 parkingLevelService.save(parkingLevel);
 		 dataManager.initData(startNumber, parkingLevel);
-		 modelMap.addAttribute("parkingLevels", getParkingLevels());
+		 modelMap.addAttribute(Constants.MODEL_LIST_PARKING_LEVEL, getParkingLevels());
 		 return setup();
 	}
 	
-	@RequestMapping(value = "removeParkingLevel", method = RequestMethod.POST)
+	@RequestMapping(value = Constants.OPERATION_REMOVE_PARKING_LEVEL, method = RequestMethod.POST)
 	public ModelAndView removeParkingLevel(@Valid ParkingLevel parkingLevel, ModelMap modelMap) {
-		 ModelAndView model =  new ModelAndView("setup");
-		 model.addObject("vehicleType", new VehicleType());
+		 ModelAndView model =  new ModelAndView(Constants.SCREEN_SETUP);
+		 model.addObject(Constants.MODEL_VEHICLE_TYPE, new VehicleType());
 		 String name = parkingLevel.getLevelName();
 		 if (name == null) {
 			 model.addObject(Constants.ERROR_MESSAGE_PARKING_LEVEL_REMOVE, messageSource.getMessage("NotEmpty.vehicleType.name", null, Locale.getDefault()));
@@ -143,17 +167,17 @@ public class SetupController {
 		 parkingLevelService.deleteByName(parkingLevelForDelete.getLevelName());
 		 parkingLotService.deleteByName(name);
 		 
-		 modelMap.addAttribute("parkingLevels", getParkingLevels());
+		 modelMap.addAttribute(Constants.MODEL_LIST_PARKING_LEVEL, getParkingLevels());
 		 return setup();
 	}
 
-	 @ModelAttribute("vehicleTypes")
+	 @ModelAttribute(Constants.MODEL_LIST_VEHICLE_TYPE)
 	 public List<VehicleType> getVehicleTypes() {
 	   List<VehicleType> vehicleTypeList = vehicleTypeService.getAllVehicleTypes();
 	   return vehicleTypeList;
 	 }
 	 
-	 @ModelAttribute("parkingLevels")
+	 @ModelAttribute(Constants.MODEL_LIST_PARKING_LEVEL)
 	 public List<ParkingLevel> getParkingLevels() {
 	   List<ParkingLevel> parkingLevelList = parkingLevelService.getAllParkingLevels();
 	   return parkingLevelList;

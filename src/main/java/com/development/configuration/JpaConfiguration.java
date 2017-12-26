@@ -26,6 +26,10 @@ public class JpaConfiguration {
 	@Autowired
 	private Environment environment;
 	
+	/**
+	 * Defining database data source
+	 * @return
+	 */
 	@Bean
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
