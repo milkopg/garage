@@ -12,14 +12,15 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+@SuppressWarnings("deprecation")
 @Configuration
 @Import(JpaConfiguration.class)
 @EnableWebMvc
 @ComponentScan(basePackages = "com.development")
-public class AppConfig extends WebMvcConfigurationSupport  {
+public class AppConfig extends WebMvcConfigurerAdapter   {
 	
 	private static final Logger logger = LoggerFactory.getLogger(AppConfig.class);
 	/**

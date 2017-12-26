@@ -7,21 +7,24 @@
 <title><spring:message code="garage.home.title"></spring:message></title>
 </head>
 <body>
-	<div>
+	<div class="container">
 		<form method="POST" modelAttribute="operation" action="home"> 
 		<hr/>
 			<div class="form-group">
-			  <label for="vehicle">Plate number:</label>
-			  <form:input path="vehicle.plateNumber" class="form-control"/>
+			  <label for="vehicle" class="font-italic"><spring:message code="vehicle.plateNumber"></spring:message></label>
+			  <form:input path="vehicle.plateNumber" class="form-control table-nonfluid"/>
 			   <c:if test="${not empty msg}">
 					<strong style="color: red; font-size: 16px">${msg}</strong>
-			</c:if>
+				</c:if>
 			</div>
-			<hr/>
-			  <div class="radio">
-		      <label><input type="radio" checked="checked" name="type" value="1">Enter</label>
+			<br/>
+			<div>
+				<label for="vehicle" class="font-italic"><spring:message code="operation"></spring:message></label>
+				</div>
+			<div class="radio">
+		      <label><input type="radio" checked="checked" name="type" value="1" >Enter</label>
 		       <div>
-		    	<form:select path="vehicleType.name" id="vehicleType.name">
+		    	<form:select path="vehicleType.name" id="vehicleType.name" class="custom-select">
 		    		<form:options items="${vehicleTypes}" itemValue="name" itemLabel="name"/>
 		    	</form:select>
 		    	</div>
@@ -32,15 +35,24 @@
 		    <div class="radio">
 		      <label><input type="radio" name="type" value="3">Status</label>
 		    </div>
-		    <hr/>
+		    <br>
 		    <div>
-		    	<form:select path="parkingLevel.levelName" id="parkingLevel.levelName">
+		    	 <label for="name" class="font-italic"><spring:message code="parkingLevel.name"></spring:message></label>
+		    </div>
+		    <div>
+		    	<form:select path="parkingLevel.levelName" id="parkingLevel.levelName" class="custom-select">
 		    		<form:options items="${parkingLevels}" itemValue="levelName" itemLabel="levelName" />
 		    	</form:select>
 		    </div>
-			 <hr/>
+		    <br>
+		    <div>
+		     	<button type="submit" class="btn btn-default" ><spring:message code="button.submit"></spring:message></button>
+		     </div>
+		    <br>
 		     <div>
-		    	<table id="parkingLotTable" border="1" class="table table-striped" >
+		     <hr>
+		     <label for="name" class="font-italic"><spring:message code="parking.status"></spring:message></label>
+		    	<table id="parkingLotTable" border="1" class="table table-striped " >
 				  <tr>
 				    <th> <spring:message code="parkingLevel.name"></spring:message></th>
 				    <th> <spring:message code="parkingLevel.capacity"></spring:message></th> 
@@ -61,7 +73,7 @@
 		    <c:if test="${not empty operations}"> 
 			 <hr/>
 		   		<div>
-			    	<table id="vehicleStatusTable" border="1" class="table table-striped" >
+			    	<table id="vehicleStatusTable" border="1" class="table table-bordered table-nonfluid" >
 					  <tr>
 					    <th> <spring:message code="vehicle.plateNumber"></spring:message></th>
 					    <th> <spring:message code="parkingLevel.name"></spring:message></th> 
@@ -81,9 +93,7 @@
 					</table>
 					<br>
 			    </div>
-		    </c:if>
-		    <hr/>
-			  <button type="submit" class="btn btn-default">Submit</button>
+		    </c:if>		 
 			  <hr/>
 		</form>
 	 </div>
