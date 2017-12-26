@@ -61,7 +61,7 @@ public class OperationController {
 	@RequestMapping(value = { "/", Constants.SCREEN_HOME}, method = RequestMethod.GET)
 	public ModelAndView home() {
 		List<ParkingLevel> parkingLevels = parkingLevelService.getAllParkingLevels(); 
-		ModelAndView mav = new ModelAndView("home");
+		ModelAndView mav = new ModelAndView(Constants.SCREEN_HOME);
 		mav.addObject(Constants.MODEL_PARKINGL_LEVEL, parkingLevels != null && !parkingLevels.isEmpty() ? parkingLevels.get(0) : new ParkingLevel());
 		mav.addObject(Constants.MODEL_OPERATION, new Operation());
 		mav.addObject(Constants.MODEL_VEHICLE, new Vehicle());
