@@ -138,10 +138,6 @@ public class OperationServiceImpl implements OperationService {
 		return dao.isVehicleInParking(plateNumber);
 	}
 
-	public boolean isVehicleAlreadyExit(String plateNumber) {
-		return dao.isVehicleAlreadyExit(plateNumber);
-	}
-
 	public List<Operation> getOperationsByVehicleTypeName(String name) {
 		return dao.getOperationsByVehicleTypeName(name);
 	}

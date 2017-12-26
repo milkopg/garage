@@ -118,12 +118,6 @@ public class OperationDaoImpl extends AbstractDao<Long, Operation> implements Op
 		return operations != null && operations.size() > 0;
 	}
 
-	public boolean isVehicleAlreadyExit(String plateNumber) {
-		List<Operation> operationsFinished = getOperationsByPlateNumberForExitedVehicles(plateNumber);
-		List<Operation> allOperations = getOperationsByPlateNumber(plateNumber);
-		return operationsFinished != null && allOperations != null ? operationsFinished.size() != allOperations.size() : false;
-	}
-
 	@SuppressWarnings("unchecked")
 	public List<Operation> getOperationsByVehicleTypeName(String name) {
 		List<Operation> operations = getEntityManager()

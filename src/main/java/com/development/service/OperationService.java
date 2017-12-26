@@ -21,7 +21,6 @@ public interface OperationService {
 	void enterCar(String plateNumber, VehicleType vehicleType, ParkingLevel parkingLevel);
 	int exitCar (String plateNumber);
 	boolean isVehicleInParking(String plateNumber);
-	boolean isVehicleAlreadyExit(String plateNumber);
 	ParkingLot takeFirstAvailableParkingLot(ParkingLevel parkingLevel);
 	void save(Operation operation);
 	void update(Operation operation);
