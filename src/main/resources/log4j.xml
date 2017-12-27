@@ -15,14 +15,14 @@
 		<param name="File" value="D:/Logs/garage_User.log" />
 		<param name="threshold" value="debug"/>
        <layout class="org.apache.log4j.PatternLayout">
-          <param name="ConversionPattern" value="%-7p %d [%t] %c %x - %m%n"/>
+          <param name="ConversionPattern" value="%d{dd/MM/yyyy HH:mm:ss,SSS} %5p %c: %L - %m%n"/>
        </layout>
 	</appender>
 	
 	<appender name="system" class="org.apache.log4j.FileAppender">
 		<param name="File" value="D:/Logs/garage_System.log" />
        <layout class="org.apache.log4j.PatternLayout">
-          <param name="ConversionPattern" value="%-7p %d [%t] %c %x - %m%n"/>
+          <param name="ConversionPattern" value="%d{dd/MM/yyyy HH:mm:ss,SSS} %5p %c: %L - %m%n"/>
        </layout>
 	</appender>
 	
