@@ -2,7 +2,11 @@
 
 <html>
 
-<body>	
+<tag:header>
+	<title><spring:message code="garage.setup.title"></spring:message></title>
+</tag:header>
+
+<tag:body>	
 	<div class="container">
 		<form method="POST" action="addVehicleType"> 
 			<hr/>
@@ -130,5 +134,8 @@
 		</form>
 	<hr/>
 	</div>
-</body>
+	<tag:left></tag:left>
+	<tag:right></tag:right>
+</tag:body>
+<tag:footer></tag:footer>
 </html>

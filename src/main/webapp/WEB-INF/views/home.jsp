@@ -1,12 +1,10 @@
 
 <%@include file="master.jsp"%>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-
-<title><spring:message code="garage.home.title"></spring:message></title>
-</head>
-<body>
+<tag:header>
+	<title><spring:message code="garage.home.title"></spring:message></title>
+</tag:header>
+<tag:body>
 	<div class="container">
 		<form method="POST" modelAttribute="operation" action="home"> 
 		<hr/>
@@ -97,5 +95,8 @@
 			  <hr/>
 		</form>
 	 </div>
-</body>
+	<tag:left></tag:left>
+	<tag:right></tag:right>
+</tag:body>
+	<tag:footer></tag:footer>
 </html>

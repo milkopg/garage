@@ -14,3 +14,31 @@ hr {
     bottom:10%;
     border-left:1px solid white;
 }
+
+#left {
+	float: left;
+}
+
+#right {
+	float: right;
+}
+
+#footer {
+	clear: both;
+	border-top: 3px solid #B7C1C4;
+	padding: 8px 0 17px 0;
+	text-align: center;
+	color: #323232
+}
+
+#header {
+	clear: both;
+	border-top: 3px solid #B7C1C4;
+	padding: 8px 0 17px 0;
+	text-align: center;
+	color: #323232
+}
+
+.table-nonfluid {
+   width: auto !important;
+}

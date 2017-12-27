@@ -9,6 +9,7 @@
 	<title><spring:message code="garage.setup.title"></spring:message></title>
 	<link href="${bootstrapCss}" rel="stylesheet" />
 	<link href="${stylesCss}" rel="stylesheet" />
+
 </head>
 <body>
 	
