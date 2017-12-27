@@ -96,7 +96,6 @@ public class SetupController {
 	public ModelAndView addVehicleType(@Valid VehicleType vehicleType, BindingResult result, ModelMap modelMap) {
 		logger.trace("vehicleType: {}, result: {}, modelMap: {}", vehicleType, result, modelMap);
 		 ModelAndView model =  new ModelAndView(Constants.SCREEN_SETUP);
-		 //model.addObject(Constants.MODEL_PARKINGL_LEVEL, new ParkingLevel());
 		 String name = vehicleType.getName();
 		 if (name == null || "".equals(name)) {
 			 model.addObject(Constants.ERROR_MESSAGE_VEHICLE_TYPE_ADD, messageSource.getMessage("NotEmpty.vehicleType.name", null, Locale.getDefault()));
@@ -119,7 +118,6 @@ public class SetupController {
 	public ModelAndView removeVehicleType(@Valid VehicleType vehicleType, BindingResult result, ModelMap modelMap) {
 		logger.trace("vehicleType: {}, result: {}, modelMap: {}", vehicleType, result, modelMap);
 		 ModelAndView model =  new ModelAndView(Constants.SCREEN_SETUP);
-		 //model.addObject(Constants.MODEL_PARKINGL_LEVEL, new ParkingLevel());
 		 String name = vehicleType.getName();
 		 if (name == null) {
 			 model.addObject(Constants.ERROR_MESSAGE_VEHICLE_TYPE_REMOVE, messageSource.getMessage("NotEmpty.vehicleType.name", null, Locale.getDefault()));
@@ -150,8 +148,6 @@ public class SetupController {
 	public ModelAndView addParkingLevel(@Valid ParkingLevel parkingLevel, BindingResult result, ModelMap modelMap) {
 		logger.trace("parkingLevel: {}, result: {}, modelMap: {}", parkingLevel, result, modelMap);
 		 ModelAndView model =  new ModelAndView(Constants.SCREEN_SETUP);
-		 //adding empty vehicleType object to jsp
-		 //model.addObject(Constants.MODEL_VEHICLE_TYPE, new VehicleType());
 		 String name = parkingLevel.getLevelName();
 		 if (name == null) {
 			 model.addObject(Constants.ERROR_MESSAGE_PARKING_LEVEL_ADD, messageSource.getMessage("NotEmpty.parkingLevel.name", null, Locale.getDefault()));
@@ -191,7 +187,6 @@ public class SetupController {
 	public ModelAndView removeParkingLevel(@Valid ParkingLevel parkingLevel, ModelMap modelMap) {
 		logger.trace("parkingLevel: {}, modelMap: {}", parkingLevel, modelMap);
 		 ModelAndView model =  new ModelAndView(Constants.SCREEN_SETUP);
-		// model.addObject(Constants.MODEL_VEHICLE_TYPE, new VehicleType());
 		 String name = parkingLevel.getLevelName();
 		 if (name == null) {
 			 model.addObject(Constants.ERROR_MESSAGE_PARKING_LEVEL_REMOVE, messageSource.getMessage("NotEmpty.parkingLevel.name", null, Locale.getDefault()));
