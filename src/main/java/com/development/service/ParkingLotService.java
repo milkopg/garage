@@ -14,6 +14,7 @@ public interface ParkingLotService {
 	List<ParkingLot> getUsedLotsByParkingLevel(int parkingLevelId);
 	List<ParkingLot> getAllLots();
 	List<GarageStatus> getGerageStatus();
+	boolean isAvailableParkingLot(ParkingLevel parkingLevel);
 	void save (ParkingLot parkingLot);
 	void update (ParkingLot parkingLot);
 	void deleteByName(String name);

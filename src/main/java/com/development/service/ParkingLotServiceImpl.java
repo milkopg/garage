@@ -75,4 +75,7 @@ public class ParkingLotServiceImpl implements ParkingLotService {
 		dao.deleteByParkingLevel(parkingLevel);
 	}
 
+	public boolean isAvailableParkingLot(ParkingLevel parkingLevel) {
+		return dao.isAvailableParkingLot(parkingLevel);
+	}
 }

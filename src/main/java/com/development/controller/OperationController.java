@@ -126,6 +126,7 @@ public class OperationController {
 		
 		validateEmptyVehicleNumber(model, vehicle, operationType);
 		validateCarAlreadyEntered(model, vehicle, operationType);
+		validateAvailableParkingLotInLevel(model, parkingLevel.getLevelName());
 		if (model.getModelMap().containsKey(Constants.ERROR_MESSAGE)) {
 			logger.info("process contains errors");
 			return model;
@@ -140,8 +141,26 @@ public class OperationController {
 		return model;
 	}
 
-	
-	
+	/**
+	 * Check in advance if there is free parking lots for current level name. Add error if level name is null, level name is not valid 
+	 * and if there is no available parking lots 
+	 * @param model for adding object error
+	 * @param levelName 
+	 */
+	private void validateAvailableParkingLotInLevel(ModelAndView model, String levelName) {
+		if (levelName == null) {
+			model.addObject(Constants.ERROR_MESSAGE, messageSource.getMessage("error.parkingLevel.name", null, Locale.getDefault()));
+		}
+		ParkingLevel parkingLevel = parkingLevelService.getByName(levelName);
+		if (parkingLevel == null) {
+			model.addObject(Constants.ERROR_MESSAGE, messageSource.getMessage("error.parkingLevel.notFound", null, Locale.getDefault()));
+		}
+		
+		if (!parkingLotService.isAvailableParkingLot(parkingLevel)) {
+			model.addObject(Constants.ERROR_MESSAGE, messageSource.getMessage("error.parkingLevel.notFreeLots", null, Locale.getDefault()));
+		}
+	}
+
 	/**
 	 * process to next operation according operationType. 
 	 * @param modelMap required to add attribute to reload data

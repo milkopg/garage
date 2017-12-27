@@ -98,7 +98,8 @@ public class OperationServiceImpl implements OperationService {
 			daoVehicle.save(vehicle);
 		}
 		Operation operation = new Operation();
-		operation.setParkingLot(takeFirstAvailableParkingLot(parkingLevel));
+		ParkingLot freeLot = takeFirstAvailableParkingLot(parkingLevel);
+		operation.setParkingLot(freeLot);
 		operation.setTimeEnter(new Date());
 		operation.setVehicle(vehicle);
 		dao.save(operation);

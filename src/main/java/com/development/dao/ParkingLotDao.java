@@ -22,6 +22,13 @@ public interface ParkingLotDao {
 	ParkingLot getByName(String name);
 	
 	/**
+	 * Check if there is available parking lot for current parking level
+	 * @param parkingLevel
+	 * @return
+	 */
+	boolean isAvailableParkingLot(ParkingLevel parkingLevel);
+	
+	/**
 	 * Get List<ParkingLot> by parkingLevelId
 	 * @param parkingLevelId filtered by
  	 * @return found List<ParkingLot>

@@ -96,4 +96,13 @@ public class ParkingLotDaoImpl extends AbstractDao<Integer, ParkingLot> implemen
 			delete(lot);
 		}
 	}
+
+	@SuppressWarnings("unchecked")
+	public boolean isAvailableParkingLot(ParkingLevel parkingLevel) {
+		List<ParkingLot> parkingLot = getEntityManager()
+				.createQuery("SELECT o FROM ParkingLot o WHERE o.parkingLevel.id=:id and o.isFree = true")
+				.setParameter("id", parkingLevel.getId())
+				.getResultList();
+		return parkingLot != null && !parkingLot.isEmpty();
+	}
 }
