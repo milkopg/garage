@@ -17,9 +17,8 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @SuppressWarnings("deprecation")
 @Configuration
-@Import(JpaConfiguration.class)
 @EnableWebMvc
-@ComponentScan(basePackages = {"com.development", "garage"})
+@ComponentScan(basePackages = {"com.development"})
 public class AppConfig extends WebMvcConfigurerAdapter   {
 	
 	private static final Logger logger = LoggerFactory.getLogger(AppConfig.class);

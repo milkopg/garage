@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.development.general.Constants;
+import com.development.log4j.LoggerManager;
 import com.development.model.GarageStatus;
 import com.development.model.Operation;
 import com.development.model.OperationType;
@@ -37,7 +38,8 @@ import com.development.service.VehicleTypeService;
 @Controller
 public class OperationController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(OperationController.class);
+	private static final Logger logger = LoggerManager.getSystemLogger();
+	private static final Logger userLogger = LoggerManager.getUserLogger();
 
 	@Autowired
 	OperationService operationService;
@@ -113,12 +115,12 @@ public class OperationController {
 	public ModelAndView process(@Valid Operation operation, Vehicle vehicle, @Valid VehicleType vehicleType, 
 			@Valid ParkingLevel parkingLevel, BindingResult result, ModelMap modelMap) {
 		ModelAndView model =  new ModelAndView(Constants.SCREEN_HOME);
-		logger.info("Vehicle plate number: {}", vehicle.getPlateNumber());
+		userLogger.info("Vehicle plate number: {}", vehicle.getPlateNumber());
 		if (vehicle.getPlateNumber() == null) {
 			return model;
 		}
 		int operationType = OperationType.valueOf(operation.getType()).getValue();
-		logger.info("OperationType: {}", operationType);
+		userLogger.info("OperationType: {}", operationType);
 		if (operationType == -1) {
 			logger.trace("returns {}", model);
 			return model;
@@ -128,13 +130,13 @@ public class OperationController {
 		validateCarAlreadyEntered(model, vehicle, operationType);
 		validateAvailableParkingLotInLevel(model, parkingLevel.getLevelName());
 		if (model.getModelMap().containsKey(Constants.ERROR_MESSAGE)) {
-			logger.info("process contains errors");
+			userLogger.info("process contains errors");
 			return model;
 		}
 		model = new ModelAndView(Constants.SCREEN_HOME);
 		ParkingLevel dbParkingLevel = parkingLevelService.getByName(parkingLevel.getLevelName());
 		
-		logger.info("Process to current operation: {}", operationType);
+		userLogger.info("Process to current operation: {}", operationType);
 		processOperation(modelMap, operationType, vehicle, vehicleType, dbParkingLevel);
 		
 		logger.trace("returns {}", model);
@@ -174,17 +176,17 @@ public class OperationController {
 		switch (OperationType.valueOf(operationType)) {
 		case ENTER:
 			VehicleType vType = vehicleTypeService.getByName(vehicleType.getName());
-			logger.info("Entering car with plateNumber: {}, type: {}, to parkingLevel: {}", vehicle.getPlateNumber(), vType.getName(), parkingLevel.getLevelName());
+			userLogger.info("Entering car with plateNumber: {}, type: {}, to parkingLevel: {}", vehicle.getPlateNumber(), vType.getName(), parkingLevel.getLevelName());
 			operationService.enterCar(vehicle.getPlateNumber(), vType, parkingLevel);
 			modelMap.addAttribute("garageStatus", getParkingLots());
 			break;
 		case EXIT:
-			logger.info("Exit car with plateNumber: {}", vehicle.getPlateNumber());
+			userLogger.info("Exit car with plateNumber: {}", vehicle.getPlateNumber());
 			operationService.exitCar(vehicle.getPlateNumber());
 			modelMap.addAttribute("garageStatus", getParkingLots());
 			break;
 		case STATUS:
-			logger.info("Get Status of car with plateNumber: {}", vehicle.getPlateNumber());
+			userLogger.info("Get Status of car with plateNumber: {}", vehicle.getPlateNumber());
 			List<Operation> operations;
 			if ("".equals(vehicle.getPlateNumber())) {
 				operations = operationService.getOperationsByParkingLevelName(parkingLevel.getLevelName());

@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.development.data.DataInitManager;
 import com.development.general.Constants;
+import com.development.log4j.LoggerManager;
 import com.development.model.Operation;
 import com.development.model.ParkingLevel;
 import com.development.model.VehicleType;
@@ -36,7 +37,8 @@ import com.development.service.VehicleTypeService;
 @Controller
 public class SetupController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(SetupController.class);
+	private static final Logger logger = LoggerManager.getSystemLogger();
+	private static final Logger userLogger = LoggerManager.getUserLogger();
 	
 	@Autowired
 	MessageSource messageSource;
@@ -102,7 +104,7 @@ public class SetupController {
 			 return setup(model, null, vehicleType);
 		 }
 		 vehicleTypeService.save(vehicleType);
-		 logger.info("vehicleType with name : {} saved succefully", vehicleType.getName());
+		 userLogger.info("vehicleType with name : {} saved succefully", vehicleType.getName());
 		 modelMap.addAttribute(Constants.MODEL_LIST_VEHICLE_TYPE, getVehicleTypes());
 		 return setup(model, null, vehicleType);
 	}
@@ -132,7 +134,7 @@ public class SetupController {
 		 }
 		 VehicleType vehicleTypeForDelete = vehicleTypeService.getByName(name);
 		 vehicleTypeService.deleteByVehicleTypeName(vehicleTypeForDelete.getName());
-		 logger.info("Removed successfully vehicleType with name: {}", name);
+		 userLogger.info("Removed successfully vehicleType with name: {}", name);
 		 modelMap.addAttribute(Constants.MODEL_LIST_VEHICLE_TYPE, getVehicleTypes());
 		 return setup(model, null, null);
 	}
@@ -169,7 +171,7 @@ public class SetupController {
 		 }
 		
 		 parkingLevelService.save(parkingLevel);
-		 logger.info("ParkingLevel with name: {} was added succesfully", parkingLevel.getLevelName());
+		 userLogger.info("ParkingLevel with name: {} was added succesfully", parkingLevel.getLevelName());
 		 //add appropriate parking lots according configuration
 		 dataManager.initData(startNumber, parkingLevel);
 		 modelMap.addAttribute(Constants.MODEL_LIST_PARKING_LEVEL, getParkingLevels());
@@ -203,13 +205,13 @@ public class SetupController {
 		 
 		 ParkingLevel parkingLevelForDelete = parkingLevelService.getByName(name);
 		 parkingLotService.deleteByParkingLevel(parkingLevelForDelete);
-		 logger.info("Removed parkinglots for parkingLevel name: {}", name);
+		 userLogger.info("Removed parkinglots for parkingLevel name: {}", name);
 		 
 		 parkingLevelService.deleteByName(parkingLevelForDelete.getLevelName());
-		 logger.info("Removed parkintLots with name: {}", name);
+		 userLogger.info("Removed parkintLots with name: {}", name);
 		 
 		 modelMap.addAttribute(Constants.MODEL_LIST_PARKING_LEVEL, getParkingLevels());
-		 return setup(model, parkingLevelForDelete, null);
+		 return setup(model, null, null);
 	}
 
 	/**
