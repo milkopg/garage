@@ -5,19 +5,9 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.NamedNativeQuery;
-import javax.persistence.Table;
 
 import org.hibernate.annotations.Immutable;
-import org.hibernate.annotations.Subselect;
 
-
-//@Subselect("SELECT PARKING_LEVEL_ID, Sum(IS_FREE) free, (SELECT COUNT(*)  FROM t_parking_lot WHERE IS_FREE = 0) used  FROM t_parking_lot  where is_free = 1  group by PARKING_LEVEL_ID, used;")
-@NamedNativeQuery(
-	    name="myQuery",
-	    query = "SELECT PARKING_LEVEL_ID, Sum(IS_FREE) free, (SELECT COUNT(*)  FROM t_parking_lot WHERE IS_FREE = 0) used  FROM t_parking_lot  where is_free = 1  group by PARKING_LEVEL_ID, used;",
-	    resultClass=GarageStatus.class
-	)
 @Entity
 @Immutable
 public class GarageStatus implements Serializable{
