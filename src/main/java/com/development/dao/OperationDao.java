@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.development.model.Operation;
-import com.development.model.ParkingLevel;
 
 public interface OperationDao {
 	Operation getById(long id);
