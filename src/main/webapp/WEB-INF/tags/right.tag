@@ -1,7 +1,7 @@
 <%@include file="../views/taglibs.jsp"%>
 <div id="right" class="column">
 		<div class="rightblock">
-			right
-			</div>
+			<spring:message code="section.right"></spring:message>
+		</div>
 </div>
 	

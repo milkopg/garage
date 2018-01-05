@@ -3,5 +3,5 @@
 <%@include file="../views/taglibs.jsp"%>
 
 <div id="header">
-	"Header"
-	</div>
+	<spring:message code="section.header"></spring:message>
+</div>

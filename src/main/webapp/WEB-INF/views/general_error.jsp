@@ -1,13 +1,13 @@
 <%@include file="taglibs.jsp"%>
-<ct:header></ct:header>
-<ct:body>
+<tag:header></tag:header>
+<tag:body>
 		<div id="center" class="column">
 		  	<div id="content">
-		  	 <h1>General error occures, please contact your system administrator</h1>
+		  	 <h1><spring:message code="error.general"></spring:message></h1>
 			</div>
 			
 		</div>
-	<ct:left></ct:left>
-	<ct:right></ct:right>
-</ct:body>
-<ct:footer></ct:footer>
+	<tag:left></tag:left>
+	<tag:right></tag:right>
+</tag:body>
+<tag:footer></tag:footer>
