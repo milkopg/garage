@@ -88,8 +88,8 @@ public class OperationServiceImpl implements OperationService {
 		dao.deleteById(operationId);
 	}
 
-	public void enterCar(String plateNumber, VehicleType vehicleType, ParkingLevel parkingLevel) {
-		if (plateNumber == null || vehicleType == null) return;
+	public ParkingLot enterCar(String plateNumber, VehicleType vehicleType, ParkingLevel parkingLevel) {
+		if (plateNumber == null || vehicleType == null) return null;
 		Vehicle vehicle = daoVehicle.getByPlateNumber(plateNumber);
 		if (vehicle == null) {
 			vehicle = new Vehicle();
@@ -103,6 +103,7 @@ public class OperationServiceImpl implements OperationService {
 		operation.setTimeEnter(new Date());
 		operation.setVehicle(vehicle);
 		dao.save(operation);
+		return freeLot;
 	}
 
 	public int exitCar(String plateNumber) {
@@ -120,7 +121,10 @@ public class OperationServiceImpl implements OperationService {
 
 	private int calculateHours(Operation operation) {
 		final int MILLI_TO_HOUR = 1000 * 60 * 60;
-		return (int) (operation.getTimeExit().getTime() - operation.getTimeEnter().getTime()) / MILLI_TO_HOUR;
+		int hours = (int) (operation.getTimeExit().getTime() - operation.getTimeEnter().getTime()) / MILLI_TO_HOUR;
+		//immediate counting first our it doesn't matter is stay is less
+		if (hours == 0) hours++;
+		return hours;
 	}
 
 	public ParkingLot takeFirstAvailableParkingLot(ParkingLevel parkingLevel) {

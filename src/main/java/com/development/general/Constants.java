@@ -6,6 +6,7 @@ public class Constants {
 	public static final String ERROR_MESSAGE_VEHICLE_TYPE_REMOVE = "msgVehicleVypeRemove";
 	public static final String ERROR_MESSAGE_PARKING_LEVEL_ADD= "msgParkingLevelAdd";
 	public static final String ERROR_MESSAGE_PARKING_LEVEL_REMOVE= "msgParkingLevelRemove";
+	public static final String INFO_MESSAGE = "info";
 	public static final String LOGGER_SYSTEM = "com.development.system";
 	public static final String LOGGER_USER = "com.development.user";
 	

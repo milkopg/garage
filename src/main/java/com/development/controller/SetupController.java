@@ -105,6 +105,7 @@ public class SetupController {
 		 }
 		 vehicleTypeService.save(vehicleType);
 		 userLogger.info("vehicleType with name : {} saved succefully", vehicleType.getName());
+		 model.addObject(Constants.INFO_MESSAGE, messageSource.getMessage("info.add.vehicleType.success", null, Locale.getDefault()));
 		 modelMap.addAttribute(Constants.MODEL_LIST_VEHICLE_TYPE, getVehicleTypes());
 		 return setup(model, null, vehicleType);
 	}
@@ -135,6 +136,7 @@ public class SetupController {
 		 VehicleType vehicleTypeForDelete = vehicleTypeService.getByName(name);
 		 vehicleTypeService.deleteByVehicleTypeName(vehicleTypeForDelete.getName());
 		 userLogger.info("Removed successfully vehicleType with name: {}", name);
+		 model.addObject(Constants.INFO_MESSAGE, messageSource.getMessage("info.remove.vehicleType.success", null, Locale.getDefault()));
 		 modelMap.addAttribute(Constants.MODEL_LIST_VEHICLE_TYPE, getVehicleTypes());
 		 return setup(model, null, null);
 	}
@@ -172,6 +174,7 @@ public class SetupController {
 		
 		 parkingLevelService.save(parkingLevel);
 		 userLogger.info("ParkingLevel with name: {} was added succesfully", parkingLevel.getLevelName());
+		 model.addObject(Constants.INFO_MESSAGE, messageSource.getMessage("info.add.parkingLevel.success", null, Locale.getDefault()));
 		 //add appropriate parking lots according configuration
 		 dataManager.initData(startNumber, parkingLevel);
 		 modelMap.addAttribute(Constants.MODEL_LIST_PARKING_LEVEL, getParkingLevels());
@@ -209,6 +212,7 @@ public class SetupController {
 		 
 		 parkingLevelService.deleteByName(parkingLevelForDelete.getLevelName());
 		 userLogger.info("Removed parkintLots with name: {}", name);
+		 model.addObject(Constants.INFO_MESSAGE, messageSource.getMessage("info.remove.parkingLevel.success", null, Locale.getDefault()));
 		 
 		 modelMap.addAttribute(Constants.MODEL_LIST_PARKING_LEVEL, getParkingLevels());
 		 return setup(model, null, null);

@@ -85,7 +85,7 @@ public interface OperationService {
 	 * @param vehicleType type of vehicle
 	 * @param parkingLevel which is entered
 	 */
-	void enterCar(String plateNumber, VehicleType vehicleType, ParkingLevel parkingLevel);
+	ParkingLot enterCar(String plateNumber, VehicleType vehicleType, ParkingLevel parkingLevel);
 	
 	/**
 	 * Exit car operation. It return free current parking lot to current level

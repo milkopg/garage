@@ -23,6 +23,7 @@ import com.development.model.GarageStatus;
 import com.development.model.Operation;
 import com.development.model.OperationType;
 import com.development.model.ParkingLevel;
+import com.development.model.ParkingLot;
 import com.development.model.Vehicle;
 import com.development.model.VehicleType;
 import com.development.service.OperationService;
@@ -137,7 +138,7 @@ public class OperationController {
 		ParkingLevel dbParkingLevel = parkingLevelService.getByName(parkingLevel.getLevelName());
 		
 		userLogger.info("Process to current operation: {}", operationType);
-		processOperation(modelMap, operationType, vehicle, vehicleType, dbParkingLevel);
+		processOperation(model, modelMap, operationType, vehicle, vehicleType, dbParkingLevel);
 		
 		logger.trace("returns {}", model);
 		return model;
@@ -165,24 +166,27 @@ public class OperationController {
 
 	/**
 	 * process to next operation according operationType. 
+	 * @param model current view to add information messages
 	 * @param modelMap required to add attribute to reload data
 	 * @param operationType Possible types are ENTER, EXIT, STATUS, UNKNOWN
 	 * @param vehicle - get plateNumber from Vehicle Object
 	 * @param vehicleType - Car, Motorbike , etc
 	 * @param parkingLevel - take parking level name to enter to appropriate level
 	 */
-	private void processOperation(ModelMap modelMap, int operationType, Vehicle vehicle, VehicleType vehicleType, ParkingLevel parkingLevel) {
+	private void processOperation(ModelAndView model, ModelMap modelMap, int operationType, Vehicle vehicle, VehicleType vehicleType, ParkingLevel parkingLevel) {
 		logger.trace("ModelMap: {}, operationType: {}, vehicle: {}, vehicleType: {}, parkingLevel: {}", modelMap, operationType, vehicle, vehicleType, parkingLevel);
 		switch (OperationType.valueOf(operationType)) {
 		case ENTER:
 			VehicleType vType = vehicleTypeService.getByName(vehicleType.getName());
 			userLogger.info("Entering car with plateNumber: {}, type: {}, to parkingLevel: {}", vehicle.getPlateNumber(), vType.getName(), parkingLevel.getLevelName());
-			operationService.enterCar(vehicle.getPlateNumber(), vType, parkingLevel);
+			ParkingLot enteredLot = operationService.enterCar(vehicle.getPlateNumber(), vType, parkingLevel);
 			modelMap.addAttribute("garageStatus", getParkingLots());
+			model.addObject(Constants.INFO_MESSAGE, messageSource.getMessage("info.operation.enter.success",   new String [] {vehicle.getPlateNumber(), enteredLot.getName(), enteredLot.getParkingLevel().getLevelName()}, Locale.getDefault()));
 			break;
 		case EXIT:
 			userLogger.info("Exit car with plateNumber: {}", vehicle.getPlateNumber());
-			operationService.exitCar(vehicle.getPlateNumber());
+			int stayedHours = operationService.exitCar(vehicle.getPlateNumber());
+			model.addObject(Constants.INFO_MESSAGE, messageSource.getMessage("info.operation.exit.success",   new String [] {vehicle.getPlateNumber(), String.valueOf(stayedHours)}, Locale.getDefault()));
 			modelMap.addAttribute("garageStatus", getParkingLots());
 			break;
 		case STATUS:

@@ -6,6 +6,9 @@
 </tag:header>
 <tag:body>
 	<div class="container">
+		<c:if test="${not empty info}">
+			<strong style="color: blue; font-size: 16px">${info}</strong>
+		</c:if>
 		<form method="POST" modelAttribute="operation" action="home"> 
 		<hr/>
 			<div class="form-group">
