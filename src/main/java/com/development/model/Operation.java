@@ -26,7 +26,7 @@ public class Operation implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "TIME_START")
+	@Column(name = "TIME_ENTER")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date timeEnter;
 	
