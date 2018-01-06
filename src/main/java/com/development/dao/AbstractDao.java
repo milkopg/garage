@@ -14,7 +14,7 @@ public abstract class AbstractDao <PK extends Serializable, T> {
 	public AbstractDao() {
 		this.persistedClass =(Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1];
 	}
-	//to avoid lazy initialization exception
+	//use PersistenceContextType.EXTENDED to avoid lazy initialization exception
 	@PersistenceContext(type = PersistenceContextType.EXTENDED)
 	EntityManager entityManager;
 	
